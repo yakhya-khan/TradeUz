@@ -52,7 +52,6 @@ namespace TradeUz.UI.Shell
                 method.Invoke(_navigation, null);
             }
         }
-        
         public ShellViewModel()
         {
             if (!Design.IsDesignMode)
