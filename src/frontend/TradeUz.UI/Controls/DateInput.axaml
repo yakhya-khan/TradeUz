@@ -1,0 +1,38 @@
+﻿<Styles
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:TradeUz.UI.Controls">
+
+    <Style Selector="controls|DateInput">
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Grid ColumnDefinitions="*,Auto">
+
+                    <TextBox x:Name="PART_TextBox"
+                             Watermark="dd.MM.yyyy"/>
+
+                    <Button Grid.Column="1"
+                            Width="32"
+                            Content="📅"
+                            Click="OnButtonClick"/>
+
+                    <Popup x:Name="PART_Popup"
+                           PlacementMode="Bottom"
+                           IsLightDismissEnabled="True">
+
+                        <Border Padding="8"
+                                Background="{DynamicResource ThemeBackgroundBrush}"
+                                BorderBrush="{DynamicResource ThemeBorderLowBrush}"
+                                BorderThickness="1">
+
+                            <Calendar x:Name="PART_Calendar"/>
+
+                        </Border>
+                    </Popup>
+
+                </Grid>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+
+</Styles>
