@@ -31,12 +31,30 @@
                         </StackPanel>
                      </RadioButton>
                     <RadioButton Classes="ModernRadio" GroupName="SidebarMenu" 
+                                 Tag="{DynamicResource AccentSupply}"
+                                 Command="{Binding NavigateCommand}"
+                                 CommandParameter="Supply">
+				        <StackPanel Orientation="Horizontal" Spacing="15">
+					        <Image Classes="Icon" Source="{DynamicResource IconSupply}" Margin="10,0"/>
+                            <TextBlock Text="Ta'minot" IsVisible="{Binding SideMenuExpanded}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                     </RadioButton>
+                    <RadioButton Classes="ModernRadio" GroupName="SidebarMenu" 
                                  Tag="{DynamicResource AccentTrade}"
                                  Command="{Binding NavigateCommand}"
-                                 CommandParameter="Orders">
+                                 CommandParameter="Sales">
 				        <StackPanel Orientation="Horizontal" Spacing="15">
 					        <Image Classes="Icon" Source="{DynamicResource IconTrade}" Margin="10,0"/>
                             <TextBlock Text="Savdo bo'limi" IsVisible="{Binding SideMenuExpanded}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                     </RadioButton>
+                    <RadioButton Classes="ModernRadio" GroupName="SidebarMenu" 
+                                 Tag="{DynamicResource AccentOrders}"
+                                 Command="{Binding NavigateCommand}"
+                                 CommandParameter="Orders">
+				        <StackPanel Orientation="Horizontal" Spacing="15">
+					        <Image Classes="Icon" Source="{DynamicResource IconOrders}" Margin="10,0"/>
+                            <TextBlock Text="Buyurtmalar" IsVisible="{Binding SideMenuExpanded}" VerticalAlignment="Center"/>
                         </StackPanel>
                      </RadioButton>
 

@@ -8,8 +8,6 @@
   </PropertyGroup>
   <ItemGroup>
     <AvaloniaResource Include="Assets\Icons\*.png" />
-    <AvaloniaXaml Remove="Styles\Thems\Colors.Dark.axaml" />
-    <AvaloniaXaml Remove="Styles\Thems\Colors.Light.axaml" />
     <AvaloniaResource Include="Assets\Images\LogoVendora.svg" />
     <AvaloniaResource Include="Assets\Images\LogoVendoraTr.svg" />
     <AvaloniaResource Include="Styles\Thems\Colors.Dark.axaml" />
@@ -31,10 +29,6 @@
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.3" />
     <PackageReference Include="Svg.Controls.Skia.Avalonia" Version="11.3.9.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Pages\Sales\" />
   </ItemGroup>
 
   <ItemGroup>

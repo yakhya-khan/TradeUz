@@ -6,6 +6,8 @@ using TradeUz.UI.Pages.Dashboard;
 using TradeUz.UI.Pages.Orders;
 using TradeUz.UI.Shell;
 using Microsoft.Extensions.DependencyInjection;
+using TradeUz.UI.Pages.Sales;
+using TradeUz.UI.Pages.Supply;
 
 namespace TradeUz.UI.Bootstrap
 {
@@ -22,6 +24,8 @@ namespace TradeUz.UI.Bootstrap
             // ViewsModels
             services.AddSingleton<ShellViewModel>();
             services.AddTransient<DashboardViewModel>();
+            services.AddTransient<SupplyViewModel>();
+            services.AddTransient<SalesViewModel>();
             services.AddTransient<OrdersViewModel>();
 
             // Views

@@ -27,6 +27,8 @@
         <!-- Accent colors -->
     <SolidColorBrush x:Key="AccentTrade" Color="#FF9F43"/>
     <SolidColorBrush x:Key="AccentHome" Color="#88D613"/>
+    <SolidColorBrush x:Key="AccentOrders" Color="#009688"/>
+    <SolidColorBrush x:Key="AccentSupply" Color="#FF43DE"/>
     
     <SolidColorBrush x:Key="AccentBlue" Color="#4F7CFF"/>
     <SolidColorBrush x:Key="AccentGreen" Color="#4FD18B"/>

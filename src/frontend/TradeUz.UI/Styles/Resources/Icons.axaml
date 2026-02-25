@@ -5,5 +5,7 @@
     <Bitmap x:Key="IconTrade">avares://TradeUz.UI/Assets/Icons/trade1.png</Bitmap>
         
     <Bitmap x:Key="IconHome">avares://TradeUz.UI/Assets/Icons/home.png</Bitmap>
+    <Bitmap x:Key="IconOrders">avares://TradeUz.UI/Assets/Icons/orders.png</Bitmap>
+    <Bitmap x:Key="IconSupply">avares://TradeUz.UI/Assets/Icons/supply.png</Bitmap>
 
 </ResourceDictionary>
