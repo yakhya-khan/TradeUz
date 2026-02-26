@@ -13,6 +13,10 @@
         <FluentTheme  />
         <StyleInclude Source="/Styles/Controls/RadioButtons.axaml"/>
         <StyleInclude Source="/Styles/Controls/Images.axaml"/>
+        <Style Selector="TextBox.invalid">
+            <Setter Property="BorderBrush" Value="Red"/>
+            <Setter Property="BorderThickness" Value="2"/>
+        </Style>
     </Application.Styles>
 
 
