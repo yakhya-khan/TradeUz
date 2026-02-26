@@ -3,11 +3,42 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:TradeUz.UI.Pages.Supply"
+             xmlns:i="using:Avalonia.Xaml.Interactivity"
+             xmlns:behaviors="clr-namespace:TradeUz.UI.Controls.Behaviors"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="TradeUz.UI.Pages.Supply.SupplyView"
              x:DataType="vm:SupplyViewModel">
-    <Design.DataContext>		<vm:SupplyView/>    </Design.DataContext>
+    <Design.DataContext>		
+        <vm:SupplyViewModel/>    
+    </Design.DataContext>
     <Grid>
-	  
+        <Border Background="{DynamicResource ResourceKey=PrimaryGradientBackground}" 
+                CornerRadius="8" Padding="16" Margin="20">
+            <StackPanel Spacing="10">
+                <TextBlock Text="Ta'minot ma'lumotlari" FontSize="18" FontWeight="Bold"/>
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                    <TextBlock Text="Ta'minot nomi:" VerticalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                    <TextBlock Text="Ta'minot miqdori:" VerticalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                    <TextBlock Text="Ta'minot narxi:" VerticalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel>
+                    <CalendarDatePicker
+                        Width="200"
+                        
+                        SelectedDate="{Binding SupplyDate, Mode=TwoWay}">
+
+                        <i:Interaction.Behaviors>
+                            <behaviors:DateMaskBehavior/>
+                        </i:Interaction.Behaviors>
+
+                    </CalendarDatePicker>
+                </StackPanel>
+            </StackPanel>
+            
+            </Border>
     </Grid>
 </UserControl>

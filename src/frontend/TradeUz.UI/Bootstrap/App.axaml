@@ -13,7 +13,6 @@
         <FluentTheme  />
         <StyleInclude Source="/Styles/Controls/RadioButtons.axaml"/>
         <StyleInclude Source="/Styles/Controls/Images.axaml"/>
-        <StyleInclude Source="avares://TradeUz.UI/Controls/DateInput.axaml"/>
     </Application.Styles>
 
 
