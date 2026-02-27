@@ -33,22 +33,35 @@ public class DateMaskBehavior : Behavior<CalendarDatePicker>
         _textBox.AddHandler(InputElement.KeyUpEvent, OnKeyUp, RoutingStrategies.Tunnel);
         _textBox.AddHandler(InputElement.KeyDownEvent, OnKeyDown, RoutingStrategies.Tunnel);
         _textBox.AddHandler(InputElement.LostFocusEvent, OnLostFocus, RoutingStrategies.Bubble);
-        _textBox.AddHandler(InputElement.GotFocusEvent, OnGotFocus, RoutingStrategies.Bubble);
+        _textBox.AddHandler(InputElement.PointerPressedEvent, OnPointerPressed, RoutingStrategies.Tunnel);
+
     }
 
-    private void OnGotFocus(object? sender, GotFocusEventArgs e)
+    private void OnPointerPressed(object? sender, PointerPressedEventArgs e)
     {
         if (_textBox is not TextBox tb)
             return;
-
         var rawText = tb.Text ?? string.Empty;
+        if (rawText == string.Empty)
+            return;
 
-        if (rawText.Length > 0)
+        // Отложить чтение CaretIndex, чтобы получить актуальное значение после клика мыши
+        Avalonia.Threading.Dispatcher.UIThread.Post(() =>
         {
-            // Выделить весь текст при получении фокуса
-            // Используем встроенный метод SelectAll для корректной работы в Avalonia
-            tb.SelectAll();
-        }
+            int caretIndex = tb.CaretIndex;
+            //if (AssociatedObject?.DataContext is SupplyViewModel vm)
+            //{
+            //    //vm.InfoText = nextChar;
+            //    vm.InfoText = tb.CaretIndex.ToString();
+            //}
+            if (rawText.Length > 0 && caretIndex < rawText.Length)
+            {
+                string nextChar = rawText[caretIndex].ToString();
+                int step = char.IsDigit(nextChar[0]) ? 0 : 1;
+                tb.SelectionStart = caretIndex + step;
+                tb.SelectionEnd = caretIndex + 1 + step;
+            }
+        });
     }
 
     private void OnTextInput(object? sender, TextInputEventArgs e)
@@ -68,6 +81,31 @@ public class DateMaskBehavior : Behavior<CalendarDatePicker>
             
         var rawText = tb.Text ?? string.Empty;
 
+        ////if (rawText.Length > 0)
+
+        //{
+        //    // Передать текущее значение CaretIndex в InfoText у SupplyViewModel, если DataContext — SupplyViewModel.
+        //    if (AssociatedObject?.DataContext is SupplyViewModel vm)
+        //    {
+        //        vm.InfoText = tb.CaretIndex.ToString();
+        //    }
+        //    //int caretIndex = tb.CaretIndex;
+
+        //}
+    }
+
+    private void OnKeyUp(object? sender, KeyEventArgs e)
+    {
+        if (_internalUpdate || _textBox is not TextBox tb)
+            return;
+
+        if (e.Key is Key.Back or Key.Delete or Key.Tab)
+            return;
+
+        var rawText = tb.Text ?? string.Empty;
+        if (rawText == string.Empty)
+            return;
+
         if (rawText.Length > 0)
 
         {
@@ -76,30 +114,36 @@ public class DateMaskBehavior : Behavior<CalendarDatePicker>
             {
                 vm.InfoText = tb.CaretIndex.ToString();
             }
-            //int caretIndex = tb.CaretIndex;
 
         }
-    }
-
-    private void OnKeyUp(object? sender, KeyEventArgs e)
-    {
-        if (_internalUpdate || _textBox is not TextBox tb)
+            int caretIndex = tb.CaretIndex;
+        if (e.Key is Key.Left && caretIndex>0)
+        {
+            
+                string prevChar = rawText[caretIndex - 1].ToString();
+                int step = char.IsDigit(prevChar[0]) ? 0 : 1;
+                tb.SelectionStart = caretIndex - step - 1;
+                tb.SelectionEnd = caretIndex - step;
+           
             return;
-
-        if (e.Key is Key.Back or Key.Delete or Key.Tab or Key.Left or Key.Right)
+        }
+        if (rawText.Length > 0 && caretIndex < rawText.Length)
+        {
+            string nextChar = rawText[caretIndex].ToString();
+            int step = char.IsDigit(nextChar[0]) ? 0 : 1;
+            tb.SelectionStart = caretIndex + step;
+            tb.SelectionEnd = caretIndex + 1 + step;
             return;
-
-        var rawText = tb.Text ?? string.Empty;
-        
+        }
 
         // Если поле уже полностью заполнено — начинаем заново
-        if (rawText.Length == 10 && tb.CaretIndex == rawText.Length)
-        {
-            _internalUpdate = true;
-            tb.Text = "";
-            tb.CaretIndex = 0;
-            _internalUpdate = false;
-        }
+        //if (rawText.Length == 10 && tb.CaretIndex == rawText.Length)
+        //{
+        //    _internalUpdate = true;
+        //    tb.Text = "";
+        //    tb.CaretIndex = 0;
+        //    _internalUpdate = false;
+        //}
 
         var digits = new string(tb.Text?.Where(char.IsDigit).ToArray());
 
