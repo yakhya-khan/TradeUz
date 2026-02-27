@@ -6,6 +6,7 @@ using Avalonia.Xaml.Interactivity;
 using System;
 using System.Globalization;
 using System.Linq;
+using TradeUz.UI.Pages.Supply;
 
 namespace TradeUz.UI.Controls.Behaviors;
 
@@ -30,13 +31,54 @@ public class DateMaskBehavior : Behavior<CalendarDatePicker>
 
         _textBox.AddHandler(InputElement.TextInputEvent, OnTextInput, RoutingStrategies.Tunnel);
         _textBox.AddHandler(InputElement.KeyUpEvent, OnKeyUp, RoutingStrategies.Tunnel);
+        _textBox.AddHandler(InputElement.KeyDownEvent, OnKeyDown, RoutingStrategies.Tunnel);
         _textBox.AddHandler(InputElement.LostFocusEvent, OnLostFocus, RoutingStrategies.Bubble);
+        _textBox.AddHandler(InputElement.GotFocusEvent, OnGotFocus, RoutingStrategies.Bubble);
+    }
+
+    private void OnGotFocus(object? sender, GotFocusEventArgs e)
+    {
+        if (_textBox is not TextBox tb)
+            return;
+
+        var rawText = tb.Text ?? string.Empty;
+
+        if (rawText.Length > 0)
+        {
+            // Выделить весь текст при получении фокуса
+            // Используем встроенный метод SelectAll для корректной работы в Avalonia
+            tb.SelectAll();
+        }
     }
 
     private void OnTextInput(object? sender, TextInputEventArgs e)
     {
         if (!e.Text.All(char.IsDigit))
+        {
             e.Handled = true;
+            _internalUpdate = true;
+            return;
+        }
+        _internalUpdate = false;
+    }
+    private void OnKeyDown(object? sender, KeyEventArgs e)
+    {
+        if (_textBox is not TextBox tb)
+            return;
+            
+        var rawText = tb.Text ?? string.Empty;
+
+        if (rawText.Length > 0)
+
+        {
+            // Передать текущее значение CaretIndex в InfoText у SupplyViewModel, если DataContext — SupplyViewModel.
+            if (AssociatedObject?.DataContext is SupplyViewModel vm)
+            {
+                vm.InfoText = tb.CaretIndex.ToString();
+            }
+            //int caretIndex = tb.CaretIndex;
+
+        }
     }
 
     private void OnKeyUp(object? sender, KeyEventArgs e)
@@ -48,6 +90,7 @@ public class DateMaskBehavior : Behavior<CalendarDatePicker>
             return;
 
         var rawText = tb.Text ?? string.Empty;
+        
 
         // Если поле уже полностью заполнено — начинаем заново
         if (rawText.Length == 10 && tb.CaretIndex == rawText.Length)

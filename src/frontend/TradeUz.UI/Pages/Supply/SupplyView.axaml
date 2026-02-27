@@ -23,7 +23,7 @@
                     <TextBlock Text="Ta'minot miqdori:" VerticalAlignment="Center"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Spacing="10">
-                    <TextBlock Text="Ta'minot narxi:" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding InfoText}" VerticalAlignment="Center"/>
                 </StackPanel>
                 <StackPanel>
                     <CalendarDatePicker

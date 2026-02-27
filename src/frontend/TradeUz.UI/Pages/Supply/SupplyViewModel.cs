@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TradeUz.UI.Pages.Common;
+using TradeUz.UI.Controls.Behaviors;
 
 namespace TradeUz.UI.Pages.Supply
 {
@@ -12,5 +13,8 @@ namespace TradeUz.UI.Pages.Supply
     {
         [ObservableProperty]
         private DateTime? supplyDate= DateTime.Now ;
+        [ObservableProperty]
+        public string? infoText=string.Empty;
+
     }
 }
