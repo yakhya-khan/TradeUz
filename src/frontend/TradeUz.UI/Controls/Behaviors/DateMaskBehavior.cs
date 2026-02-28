@@ -28,13 +28,10 @@ public class DateMaskBehavior : Behavior<CalendarDatePicker>
 
         if (_textBox == null)
             return;
-
         _textBox.AddHandler(InputElement.TextInputEvent, OnTextInput, RoutingStrategies.Tunnel);
         _textBox.AddHandler(InputElement.KeyUpEvent, OnKeyUp, RoutingStrategies.Tunnel);
-        _textBox.AddHandler(InputElement.KeyDownEvent, OnKeyDown, RoutingStrategies.Tunnel);
         _textBox.AddHandler(InputElement.LostFocusEvent, OnLostFocus, RoutingStrategies.Bubble);
         _textBox.AddHandler(InputElement.PointerPressedEvent, OnPointerPressed, RoutingStrategies.Tunnel);
-
     }
 
     private void OnPointerPressed(object? sender, PointerPressedEventArgs e)
@@ -49,11 +46,6 @@ public class DateMaskBehavior : Behavior<CalendarDatePicker>
         Avalonia.Threading.Dispatcher.UIThread.Post(() =>
         {
             int caretIndex = tb.CaretIndex;
-            //if (AssociatedObject?.DataContext is SupplyViewModel vm)
-            //{
-            //    //vm.InfoText = nextChar;
-            //    vm.InfoText = tb.CaretIndex.ToString();
-            //}
             if (rawText.Length > 0 && caretIndex < rawText.Length)
             {
                 string nextChar = rawText[caretIndex].ToString();
@@ -74,25 +66,6 @@ public class DateMaskBehavior : Behavior<CalendarDatePicker>
         }
         _internalUpdate = false;
     }
-    private void OnKeyDown(object? sender, KeyEventArgs e)
-    {
-        if (_textBox is not TextBox tb)
-            return;
-            
-        var rawText = tb.Text ?? string.Empty;
-
-        ////if (rawText.Length > 0)
-
-        //{
-        //    // Передать текущее значение CaretIndex в InfoText у SupplyViewModel, если DataContext — SupplyViewModel.
-        //    if (AssociatedObject?.DataContext is SupplyViewModel vm)
-        //    {
-        //        vm.InfoText = tb.CaretIndex.ToString();
-        //    }
-        //    //int caretIndex = tb.CaretIndex;
-
-        //}
-    }
 
     private void OnKeyUp(object? sender, KeyEventArgs e)
     {
@@ -106,25 +79,13 @@ public class DateMaskBehavior : Behavior<CalendarDatePicker>
         if (rawText == string.Empty)
             return;
 
-        if (rawText.Length > 0)
-
-        {
-            // Передать текущее значение CaretIndex в InfoText у SupplyViewModel, если DataContext — SupplyViewModel.
-            if (AssociatedObject?.DataContext is SupplyViewModel vm)
-            {
-                vm.InfoText = tb.CaretIndex.ToString();
-            }
-
-        }
-            int caretIndex = tb.CaretIndex;
+        int caretIndex = tb.CaretIndex;
         if (e.Key is Key.Left && caretIndex>0)
         {
-            
                 string prevChar = rawText[caretIndex - 1].ToString();
                 int step = char.IsDigit(prevChar[0]) ? 0 : 1;
                 tb.SelectionStart = caretIndex - step - 1;
                 tb.SelectionEnd = caretIndex - step;
-           
             return;
         }
         if (rawText.Length > 0 && caretIndex < rawText.Length)
@@ -135,15 +96,6 @@ public class DateMaskBehavior : Behavior<CalendarDatePicker>
             tb.SelectionEnd = caretIndex + 1 + step;
             return;
         }
-
-        // Если поле уже полностью заполнено — начинаем заново
-        //if (rawText.Length == 10 && tb.CaretIndex == rawText.Length)
-        //{
-        //    _internalUpdate = true;
-        //    tb.Text = "";
-        //    tb.CaretIndex = 0;
-        //    _internalUpdate = false;
-        //}
 
         var digits = new string(tb.Text?.Where(char.IsDigit).ToArray());
 
@@ -173,7 +125,7 @@ public class DateMaskBehavior : Behavior<CalendarDatePicker>
 
         if (digits.Length < 6)
         {
-            SetInvalid(tb, "Дата введена не полностью");
+            SetInvalid(tb, "Sana to'liq kiritilmagan");
             return;
         }
 
@@ -191,13 +143,13 @@ public class DateMaskBehavior : Behavior<CalendarDatePicker>
 
         if (month < 1 || month > 12)
         {
-            SetInvalid(tb, "Некорректный месяц");
+            SetInvalid(tb, "Oy xato kiritilgan");
             return;
         }
 
         if (day < 1 || day > DateTime.DaysInMonth(year, month))
         {
-            SetInvalid(tb, "Некорректный день");
+            SetInvalid(tb, "Kun xato kiritilgan");
             return;
         }
 
@@ -207,14 +159,14 @@ public class DateMaskBehavior : Behavior<CalendarDatePicker>
         if (AssociatedObject.DisplayDateStart.HasValue &&
             parsed < AssociatedObject.DisplayDateStart.Value)
         {
-            SetInvalid(tb, "Дата меньше допустимого значения");
+            SetInvalid(tb, "Sana ruxsat etilgan qiymatdan kichikroq");
             return;
         }
 
         if (AssociatedObject.DisplayDateEnd.HasValue &&
             parsed > AssociatedObject.DisplayDateEnd.Value)
         {
-            SetInvalid(tb, "Дата больше допустимого значения");
+            SetInvalid(tb, "Sana ruxsat etilgan qiymatdan kattaroq");
             return;
         }
 
@@ -234,4 +186,11 @@ public class DateMaskBehavior : Behavior<CalendarDatePicker>
         tb.Classes.Remove("invalid");
         ToolTip.SetTip(tb, null);
     }
+
+    //if (AssociatedObject?.DataContext is SupplyViewModel vm)
+    //{
+    //    //vm.InfoText = nextChar;
+    //    vm.InfoText = tb.CaretIndex.ToString();
+    //}
+
 }

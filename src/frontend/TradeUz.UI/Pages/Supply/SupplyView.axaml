@@ -20,7 +20,7 @@
                     <TextBlock Text="Ta'minot nomi:" VerticalAlignment="Center"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Spacing="10">
-                    <TextBlock Text="Ta'minot miqdori:" VerticalAlignment="Center"/>
+                    <TextBox Text="Ta'minot miqdori:" VerticalAlignment="Center"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Spacing="10">
                     <TextBlock Text="{Binding InfoText}" VerticalAlignment="Center"/>
@@ -28,13 +28,10 @@
                 <StackPanel>
                     <CalendarDatePicker
                         Width="200"
-                        
                         SelectedDate="{Binding SupplyDate, Mode=TwoWay}">
-
                         <i:Interaction.Behaviors>
                             <behaviors:DateMaskBehavior/>
                         </i:Interaction.Behaviors>
-
                     </CalendarDatePicker>
                 </StackPanel>
             </StackPanel>
