@@ -6,14 +6,13 @@ using Avalonia.Xaml.Interactivity;
 using System;
 using System.Globalization;
 using System.Linq;
-using TradeUz.UI.Pages.Supply;
 
 namespace TradeUz.UI.Controls.Behaviors;
 
 public class DateMaskBehavior : Behavior<CalendarDatePicker>
 {
-    private Control? _textBox;
-    private bool _internalUpdate;
+    private TextBox? _textBox;
+    private bool _updating;
 
     protected override void OnAttached()
     {
@@ -21,111 +20,162 @@ public class DateMaskBehavior : Behavior<CalendarDatePicker>
         AssociatedObject.TemplateApplied += OnTemplateApplied;
     }
 
+    protected override void OnDetaching()
+    {
+        base.OnDetaching();
+
+        AssociatedObject.TemplateApplied -= OnTemplateApplied;
+
+        if (_textBox != null)
+        {
+            _textBox.RemoveHandler(InputElement.TextInputEvent, OnTextInput);
+            _textBox.RemoveHandler(InputElement.KeyUpEvent, OnKeyUp);
+            _textBox.RemoveHandler(InputElement.PointerPressedEvent, OnPointerPressed);
+            _textBox.RemoveHandler(InputElement.LostFocusEvent, OnLostFocus);
+        }
+    }
+
     private void OnTemplateApplied(object? sender, TemplateAppliedEventArgs e)
     {
-        // В Avalonia 11 правильное имя:
-        _textBox = e.NameScope.Find<Control>("PART_TextBox");
+        _textBox = e.NameScope.Find<TextBox>("PART_TextBox");
 
         if (_textBox == null)
             return;
+
         _textBox.AddHandler(InputElement.TextInputEvent, OnTextInput, RoutingStrategies.Tunnel);
         _textBox.AddHandler(InputElement.KeyUpEvent, OnKeyUp, RoutingStrategies.Tunnel);
-        _textBox.AddHandler(InputElement.LostFocusEvent, OnLostFocus, RoutingStrategies.Bubble);
         _textBox.AddHandler(InputElement.PointerPressedEvent, OnPointerPressed, RoutingStrategies.Tunnel);
+        _textBox.AddHandler(InputElement.LostFocusEvent, OnLostFocus, RoutingStrategies.Bubble);
     }
 
+    // 🚫 Только цифры
+    private void OnTextInput(object? sender, TextInputEventArgs e)
+    {
+        if (!e.Text.All(char.IsDigit))
+            e.Handled = true;
+    }
+
+    // 🧠 Навигация мышью — выделение цифры
     private void OnPointerPressed(object? sender, PointerPressedEventArgs e)
     {
-        if (_textBox is not TextBox tb)
-            return;
-        var rawText = tb.Text ?? string.Empty;
-        if (rawText == string.Empty)
+        if (_textBox == null)
             return;
 
-        // Отложить чтение CaretIndex, чтобы получить актуальное значение после клика мыши
         Avalonia.Threading.Dispatcher.UIThread.Post(() =>
         {
-            int caretIndex = tb.CaretIndex;
-            if (rawText.Length > 0 && caretIndex < rawText.Length)
+            var text = _textBox.Text ?? "";
+            if (text.Length == 0)
+                return;
+
+            int caret = _textBox.CaretIndex;
+
+            if (caret < text.Length && text[caret] == '.')
+                caret++;
+
+            if (caret < text.Length)
             {
-                string nextChar = rawText[caretIndex].ToString();
-                int step = char.IsDigit(nextChar[0]) ? 0 : 1;
-                tb.SelectionStart = caretIndex + step;
-                tb.SelectionEnd = caretIndex + 1 + step;
+                _textBox.SelectionStart = caret;
+                _textBox.SelectionEnd = caret + 1;
             }
         });
     }
 
-    private void OnTextInput(object? sender, TextInputEventArgs e)
-    {
-        if (!e.Text.All(char.IsDigit))
-        {
-            e.Handled = true;
-            _internalUpdate = true;
-            return;
-        }
-        _internalUpdate = false;
-    }
-
+    // 🧠 Редактирование без уничтожения UX
     private void OnKeyUp(object? sender, KeyEventArgs e)
     {
-        if (_internalUpdate || _textBox is not TextBox tb)
+        if (_updating || _textBox == null)
             return;
 
-        if (e.Key is Key.Back or Key.Delete or Key.Tab)
+        if (e.Key is Key.Tab)
             return;
 
-        var rawText = tb.Text ?? string.Empty;
-        if (rawText == string.Empty)
-            return;
+        var text = _textBox.Text ?? "";
+        var caret = _textBox.CaretIndex;
 
-        int caretIndex = tb.CaretIndex;
-        if (e.Key is Key.Left && caretIndex>0)
+        // стрелка влево
+        if (e.Key == Key.Left && caret > 0)
         {
-                string prevChar = rawText[caretIndex - 1].ToString();
-                int step = char.IsDigit(prevChar[0]) ? 0 : 1;
-                tb.SelectionStart = caretIndex - step - 1;
-                tb.SelectionEnd = caretIndex - step;
-            return;
-        }
-        if (rawText.Length > 0 && caretIndex < rawText.Length)
-        {
-            string nextChar = rawText[caretIndex].ToString();
-            int step = char.IsDigit(nextChar[0]) ? 0 : 1;
-            tb.SelectionStart = caretIndex + step;
-            tb.SelectionEnd = caretIndex + 1 + step;
+            if (text[caret - 1] == '.')
+                caret--;
+
+            _textBox.SelectionStart = caret - 1;
+            _textBox.SelectionEnd = caret;
             return;
         }
 
-        var digits = new string(tb.Text?.Where(char.IsDigit).ToArray());
+        // стрелка вправо
+        if (e.Key == Key.Right && caret < text.Length)
+        {
+            if (text[caret] == '.')
+                caret++;
 
-        if (string.IsNullOrEmpty(digits))
+            if (caret < text.Length)
+            {
+                _textBox.SelectionStart = caret;
+                _textBox.SelectionEnd = caret + 1;
+            }
             return;
+        }
+        
+        if (e.Key == Key.Home)
+        {
+            _textBox.SelectionStart = 0;
+            _textBox.SelectionEnd = 1;
+            return;
+        }
+        
+        if (e.Key == Key.End)
+        {
+            _textBox.SelectionStart = text.Length - 1;
+            _textBox.SelectionEnd = text.Length;
+            return;
+        }
+         if (e.Key is Key.Delete or Key.Back)
+        {
+            _textBox.Text="";
+            return;
+        }
+        // ввод цифры — выделить следующую
+        if (caret < text.Length) 
+        {
+            caret = text[caret] == '.' ? caret + 1 : caret;
+            _textBox.SelectionStart = caret;
+            _textBox.SelectionEnd = caret + 1;
+        }
 
-        if (digits.Length >= 2)
-            digits = digits.Insert(2, ".");
 
-        if (digits.Length >= 5)
-            digits = digits.Insert(5, ".");
+        // автоформат только если курсор в конце
+        if (caret == text.Length)
+        {
+            var digits = new string(text.Where(char.IsDigit).ToArray());
 
-        if (digits.Length > 10)
-            digits = digits.Substring(0, 10);
+            if (digits.Length >= 2)
+                digits = digits.Insert(2, ".");
 
-        _internalUpdate = true;
-        tb.Text = digits;
-        tb.CaretIndex = tb.Text.Length;
-        _internalUpdate = false;
+            if (digits.Length >= 5)
+                digits = digits.Insert(5, ".");
+
+            if (digits.Length > 10)
+                digits = digits.Substring(0, 10);
+
+            _updating = true;
+            _textBox.Text = digits;
+            _textBox.CaretIndex = digits.Length;
+            _updating = false;
+        }
     }
+
+    // ✅ Валидация
     private void OnLostFocus(object? sender, RoutedEventArgs e)
     {
-        if (_textBox is not TextBox tb || string.IsNullOrWhiteSpace(tb.Text))
+        if (_textBox == null || string.IsNullOrWhiteSpace(_textBox.Text))
             return;
 
-        var digits = new string(tb.Text.Where(char.IsDigit).ToArray());
+        var digits = new string(_textBox.Text.Where(char.IsDigit).ToArray());
 
         if (digits.Length < 6)
         {
-            SetInvalid(tb, "Sana to'liq kiritilmagan");
+            SetInvalid("Sana to'liq kiritilmagan");
             return;
         }
 
@@ -143,48 +193,53 @@ public class DateMaskBehavior : Behavior<CalendarDatePicker>
 
         if (month < 1 || month > 12)
         {
-            SetInvalid(tb, "Oy xato kiritilgan");
+            SetInvalid("Oy xato kiritilgan");
             return;
         }
 
         if (day < 1 || day > DateTime.DaysInMonth(year, month))
         {
-            SetInvalid(tb, "Kun xato kiritilgan");
+            SetInvalid("Kun xato kiritilgan");
             return;
         }
 
         var parsed = new DateTime(year, month, day);
 
-        // Проверка бизнес-ограничений
         if (AssociatedObject.DisplayDateStart.HasValue &&
             parsed < AssociatedObject.DisplayDateStart.Value)
         {
-            SetInvalid(tb, "Sana ruxsat etilgan qiymatdan kichikroq");
+            SetInvalid("Sana ruxsat etilgan qiymatdan kichikroq");
             return;
         }
 
         if (AssociatedObject.DisplayDateEnd.HasValue &&
             parsed > AssociatedObject.DisplayDateEnd.Value)
         {
-            SetInvalid(tb, "Sana ruxsat etilgan qiymatdan kattaroq");
+            SetInvalid("Sana ruxsat etilgan qiymatdan kattaroq");
             return;
         }
 
-        ClearInvalid(tb);
-
+        ClearInvalid();
         AssociatedObject.SelectedDate = parsed;
-        tb.Text = parsed.ToString("dd.MM.yyyy");
-    }
-    private void SetInvalid(TextBox tb, string message)
-    {
-        tb.Classes.Add("invalid");
-        ToolTip.SetTip(tb, message);
+        _textBox.Text = parsed.ToString("dd.MM.yyyy");
     }
 
-    private void ClearInvalid(TextBox tb)
+    private void SetInvalid(string message)
     {
-        tb.Classes.Remove("invalid");
-        ToolTip.SetTip(tb, null);
+        if (_textBox == null)
+            return;
+
+        _textBox.Classes.Add("invalid");
+        ToolTip.SetTip(_textBox, message);
+    }
+
+    private void ClearInvalid()
+    {
+        if (_textBox == null)
+            return;
+
+        _textBox.Classes.Remove("invalid");
+        ToolTip.SetTip(_textBox, null);
     }
 
     //if (AssociatedObject?.DataContext is SupplyViewModel vm)
@@ -192,5 +247,4 @@ public class DateMaskBehavior : Behavior<CalendarDatePicker>
     //    //vm.InfoText = nextChar;
     //    vm.InfoText = tb.CaretIndex.ToString();
     //}
-
 }

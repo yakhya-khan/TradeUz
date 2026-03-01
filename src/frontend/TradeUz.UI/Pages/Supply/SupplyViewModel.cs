@@ -15,6 +15,8 @@ namespace TradeUz.UI.Pages.Supply
         private DateTime? supplyDate= DateTime.Now ;
         [ObservableProperty]
         public string? infoText=string.Empty;
+        [ObservableProperty]
+        private decimal numericValue;
 
     }
 }

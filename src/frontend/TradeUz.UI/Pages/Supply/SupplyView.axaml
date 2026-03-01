@@ -17,10 +17,24 @@
             <StackPanel Spacing="10">
                 <TextBlock Text="Ta'minot ma'lumotlari" FontSize="18" FontWeight="Bold"/>
                 <StackPanel Orientation="Horizontal" Spacing="10">
-                    <TextBlock Text="Ta'minot nomi:" VerticalAlignment="Center"/>
+                    <TextBlock Text="Нумерик:" VerticalAlignment="Center"/>
+                    <TextBox Text="{Binding NumericValue, Mode=TwoWay}"
+                             Width="200">
+                        <i:Interaction.Behaviors>
+                            <behaviors:MaskBehavior
+                                Decimals="2"
+                                
+                            />
+                        </i:Interaction.Behaviors>
+                     </TextBox>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Spacing="10">
-                    <TextBox Text="Ta'minot miqdori:" VerticalAlignment="Center"/>
+                    <TextBlock Text="Ta'minot miqdori:" VerticalAlignment="Center"/>
+                    <TextBox Width="150">
+    <i:Interaction.Behaviors>
+        <behaviors:MaskBehavior/>
+    </i:Interaction.Behaviors>
+</TextBox>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Spacing="10">
                     <TextBlock Text="{Binding InfoText}" VerticalAlignment="Center"/>
