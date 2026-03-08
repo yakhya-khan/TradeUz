@@ -3,7 +3,7 @@
         xmlns:d="https://github.com/avaloniaui/design"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:TradeUz.UI.Shell"
-        Width="1280" Height="700"
+        Width="1240" Height="700"
         x:Class="TradeUz.UI.Shell.ShellView"
         x:DataType="vm:ShellViewModel"
         WindowStartupLocation="CenterScreen"
@@ -37,6 +37,15 @@
 				        <StackPanel Orientation="Horizontal" Spacing="15">
 					        <Image Classes="Icon" Source="{DynamicResource IconSupply}" Margin="10,0"/>
                             <TextBlock Text="Ta'minot" IsVisible="{Binding SideMenuExpanded}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                     </RadioButton>
+                    <RadioButton Classes="ModernRadio" GroupName="SidebarMenu" 
+                                 Tag="{DynamicResource AccentTrade}"
+                                 Command="{Binding NavigateCommand}"
+                                 CommandParameter="Retail Sales">
+				        <StackPanel Orientation="Horizontal" Spacing="15">
+					        <Image Classes="Icon" Source="{DynamicResource IconTrade}" Margin="10,0"/>
+                            <TextBlock Text="Chakana Savdo" IsVisible="{Binding SideMenuExpanded}" VerticalAlignment="Center"/>
                         </StackPanel>
                      </RadioButton>
                     <RadioButton Classes="ModernRadio" GroupName="SidebarMenu" 

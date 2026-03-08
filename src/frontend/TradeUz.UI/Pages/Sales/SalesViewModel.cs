@@ -10,5 +10,6 @@ namespace TradeUz.UI.Pages.Sales
     public partial class SalesViewModel: BasePageViewModel
     {
 
+
     }
 }

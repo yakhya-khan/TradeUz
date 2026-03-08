@@ -14,6 +14,7 @@ public static class NavigationRegistry
         { "Dashboard", typeof(DashboardViewModel) },
         { "Supply", typeof(SupplyViewModel) },
         { "Sales", typeof(SalesViewModel) },
+        { "Retail Sales", typeof(RetailSalesViewModel) },
         { "Orders", typeof(OrdersViewModel) }
     };
 }

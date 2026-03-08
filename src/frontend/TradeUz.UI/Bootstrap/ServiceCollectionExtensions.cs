@@ -26,6 +26,7 @@ namespace TradeUz.UI.Bootstrap
             services.AddTransient<DashboardViewModel>();
             services.AddTransient<SupplyViewModel>();
             services.AddTransient<SalesViewModel>();
+            services.AddTransient<RetailSalesViewModel>();
             services.AddTransient<OrdersViewModel>();
 
             // Views
