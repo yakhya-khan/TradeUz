@@ -11,17 +11,5 @@
     </Design.DataContext>
     <Grid >
 		
-   <TextBlock Text="Dashboard Page"
-               FontSize="24"
-               HorizontalAlignment="Center"
-               VerticalAlignment="Center"/>
-    <TextBox Width="200" Text="{Binding WelcomeMessage}"
-             HorizontalAlignment="Center"
-             VerticalAlignment="Top"
-             Margin="0,20,0,0"/>
-    <TextBox Width="200" Text="{Binding Description}"
-             HorizontalAlignment="Center"
-             VerticalAlignment="Top"
-             Margin="0,80,0,0"/>
     </Grid>
 </UserControl>
