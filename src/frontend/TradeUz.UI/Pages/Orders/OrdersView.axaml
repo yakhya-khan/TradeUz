@@ -2,10 +2,359 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="TradeUz.UI.Pages.Orders.OrdersView">
-    <TextBlock Text="Ordes Page"
-               FontSize="24"
-               HorizontalAlignment="Center"
-               VerticalAlignment="Center"/>
+             xmlns:vm="clr-namespace:TradeUz.UI.Pages.Orders"
+             xmlns:common="clr-namespace:TradeUz.UI.Pages.Common"
+             xmlns:i="using:Avalonia.Xaml.Interactivity"
+             xmlns:behaviors="clr-namespace:TradeUz.UI.Controls.Behaviors"
+             mc:Ignorable="d"
+             d:DesignWidth="1240"
+             d:DesignHeight="820"
+             x:Class="TradeUz.UI.Pages.Orders.OrdersView"
+             x:DataType="vm:OrdersViewModel">
+    <Design.DataContext>
+        <vm:OrdersViewModel />
+    </Design.DataContext>
+
+    <Border Background="{DynamicResource PrimaryBackground}" Padding="22">
+        <Grid RowDefinitions="Auto,Auto,*" RowSpacing="18">
+            <Border Padding="28" CornerRadius="22" Background="{DynamicResource SurfaceDefault}">
+                <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto">
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="Управление заказами торговых агентов"
+                                   FontSize="28"
+                                   FontWeight="SemiBold"
+                                   Foreground="{DynamicResource PrimaryForeground}" />
+                        <TextBlock Text="Операторы видят новые заказы, передают их на сборку и отправляют в доставку без Excel и звонков по цепочке."
+                                   FontSize="14"
+                                   TextWrapping="Wrap"
+                                   MaxWidth="760"
+                                   Foreground="{DynamicResource SecondaryForeground}" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="10">
+                        <Border Padding="16,12" CornerRadius="16" Background="{DynamicResource PrimaryGradientBackground}">
+                            <StackPanel Spacing="4">
+                                <TextBlock Text="Сегодня" FontSize="13" Foreground="{DynamicResource SecondaryForeground}" />
+                                <TextBlock Text="Фокус на срочных заказах" FontSize="18" FontWeight="SemiBold" Foreground="{DynamicResource PrimaryForeground}" />
+                            </StackPanel>
+                        </Border>
+                        <Button Content="Новый заказ"
+                                Command="{Binding OpenCreateOrderFormCommand}"
+                                Padding="18,12"
+                                CornerRadius="14"
+                                Background="{DynamicResource AccentBlue}"
+                                Foreground="{DynamicResource PrimaryHoverForeground}"
+                                FontWeight="SemiBold" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+<!--            <ItemsControl Grid.Row="1" ItemsSource="{Binding Metrics}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="common:MetricCardViewModel">
+                        <Border Width="285" Margin="0,0,16,16" Padding="18" CornerRadius="18" Background="{DynamicResource SurfaceDefault}">
+                            <Grid RowDefinitions="Auto,Auto,Auto" RowSpacing="10">
+                                <Border Width="44" Height="44" CornerRadius="12" Background="{Binding AccentBackground}">
+                                    <Border BorderBrush="{Binding AccentBrush}" BorderThickness="2" CornerRadius="12" />
+                                </Border>
+                                <TextBlock Grid.Row="1" Text="{Binding Value}" FontSize="28" FontWeight="Bold" Foreground="{DynamicResource PrimaryForeground}" />
+                                <StackPanel Grid.Row="2" Spacing="4">
+                                    <TextBlock Text="{Binding Title}" FontWeight="SemiBold" Foreground="{DynamicResource PrimaryForeground}" />
+                                    <TextBlock Text="{Binding Subtitle}" TextWrapping="Wrap" Foreground="{DynamicResource SecondaryForeground}" />
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+-->
+            <Grid Grid.Row="2" ColumnDefinitions="1.15*,0.95*" ColumnSpacing="18">
+                <Border Padding="20" CornerRadius="20" Background="{DynamicResource SurfaceDefault}">
+                    <Grid RowDefinitions="Auto,Auto,Auto,*" RowSpacing="16">
+                        <TextBlock Text="Очередь заказов" FontSize="22" FontWeight="SemiBold" Foreground="{DynamicResource PrimaryForeground}" />
+
+                        <Grid Grid.Row="1" ColumnDefinitions="2*,*" ColumnSpacing="12">
+                            <TextBox Watermark="Поиск по номеру, агенту или точке"
+                                     Text="{Binding SearchText, Mode=TwoWay}"
+                                     Padding="12"
+                                     Background="{DynamicResource SurfaceHover}"
+                                     BorderBrush="{DynamicResource BorderDefault}"
+                                     BorderThickness="1"
+                                     CornerRadius="12" />
+                            <ComboBox Grid.Column="1"
+                                      ItemsSource="{Binding StatusFilters}"
+                                      SelectedItem="{Binding SelectedStatusFilter, Mode=TwoWay}"
+                                      Background="{DynamicResource SurfaceHover}"
+                                      BorderBrush="{DynamicResource BorderDefault}"
+                                      BorderThickness="1"
+                                      CornerRadius="12" />
+                        </Grid>
+
+                        <Border Grid.Row="2"
+                                IsVisible="{Binding IsCreateOrderFormOpen}"
+                                Padding="18"
+                                CornerRadius="18"
+                                Background="{DynamicResource SurfaceHover}">
+                            <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto" RowSpacing="14">
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Text="Новый заказ" FontSize="20" FontWeight="SemiBold" Foreground="{DynamicResource PrimaryForeground}" />
+                                    <Button Grid.Column="1"
+                                            Content="Отмена"
+                                            Command="{Binding CancelCreateOrderCommand}"
+                                            Padding="14,8"
+                                            CornerRadius="12"
+                                            Background="{DynamicResource SurfaceDefault}"
+                                            Foreground="{DynamicResource PrimaryForeground}" />
+                                </Grid>
+
+                                <Grid Grid.Row="1" ColumnDefinitions="*,*" ColumnSpacing="12">
+                                    <TextBox Watermark="Торговый агент"
+                                             Text="{Binding NewAgentName, Mode=TwoWay}"
+                                             Padding="12"
+                                             Background="{DynamicResource SurfaceDefault}"
+                                             BorderBrush="{DynamicResource BorderDefault}"
+                                             BorderThickness="1"
+                                             CornerRadius="12" />
+                                    <TextBox Grid.Column="1"
+                                             Watermark="Торговая точка"
+                                             Text="{Binding NewRetailPointName, Mode=TwoWay}"
+                                             Padding="12"
+                                             Background="{DynamicResource SurfaceDefault}"
+                                             BorderBrush="{DynamicResource BorderDefault}"
+                                             BorderThickness="1"
+                                             CornerRadius="12" />
+                                </Grid>
+
+                                <Grid Grid.Row="2" ColumnDefinitions="2.1*,0.9*" ColumnSpacing="12">
+                                    <TextBox Watermark="Адрес доставки"
+                                             Text="{Binding NewAddress, Mode=TwoWay}"
+                                             Padding="12"
+                                             Background="{DynamicResource SurfaceDefault}"
+                                             BorderBrush="{DynamicResource BorderDefault}"
+                                             BorderThickness="1"
+                                             CornerRadius="12" />
+                                    <TextBox Grid.Column="1"
+                                             Watermark="Город"
+                                             Text="{Binding NewCity, Mode=TwoWay}"
+                                             Padding="12"
+                                             Background="{DynamicResource SurfaceDefault}"
+                                             BorderBrush="{DynamicResource BorderDefault}"
+                                             BorderThickness="1"
+                                             CornerRadius="12" />
+                                </Grid>
+
+                                <Grid Grid.Row="3" ColumnDefinitions="1.1*,0.9*,0.8*,0.7*" ColumnSpacing="12">
+                                    <ComboBox ItemsSource="{Binding PaymentOptions}"
+                                              SelectedItem="{Binding NewPaymentType, Mode=TwoWay}"
+                                              Background="{DynamicResource SurfaceDefault}"
+                                              BorderBrush="{DynamicResource BorderDefault}"
+                                              BorderThickness="1"
+                                              CornerRadius="12" />
+                                    <CalendarDatePicker Grid.Column="1" SelectedDate="{Binding NewPlannedDeliveryDate, Mode=TwoWay}">
+                                        <i:Interaction.Behaviors>
+                                            <behaviors:DateMaskBehavior />
+                                        </i:Interaction.Behaviors>
+                                    </CalendarDatePicker>
+                                    <TextBox Grid.Column="2"
+                                             Watermark="14:00"
+                                             Text="{Binding NewDeliveryTimeText, Mode=TwoWay}"
+                                             Padding="12"
+                                             Background="{DynamicResource SurfaceDefault}"
+                                             BorderBrush="{DynamicResource BorderDefault}"
+                                             BorderThickness="1"
+                                             CornerRadius="12" />
+                                    <TextBox Grid.Column="3"
+                                             Watermark="Коробки"
+                                             Text="{Binding NewBoxCountText, Mode=TwoWay}"
+                                             Padding="12"
+                                             Background="{DynamicResource SurfaceDefault}"
+                                             BorderBrush="{DynamicResource BorderDefault}"
+                                             BorderThickness="1"
+                                             CornerRadius="12" />
+                                </Grid>
+
+                                <Border Grid.Row="4" Padding="14" CornerRadius="14" Background="{DynamicResource SurfaceDefault}">
+                                    <Grid RowDefinitions="Auto,*" RowSpacing="12">
+                                        <Grid ColumnDefinitions="*,Auto">
+                                            <TextBlock Text="Товарные позиции" FontWeight="SemiBold" Foreground="{DynamicResource PrimaryForeground}" />
+                                            <Button Grid.Column="1"
+                                                    Content="Добавить строку"
+                                                    Command="{Binding AddDraftLineCommand}"
+                                                    Padding="14,8"
+                                                    CornerRadius="12"
+                                                    Background="{DynamicResource AccentGreen}"
+                                                    Foreground="{DynamicResource PrimaryHoverForeground}" />
+                                        </Grid>
+                                        <ItemsControl Grid.Row="1" ItemsSource="{Binding DraftLines}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate x:DataType="vm:OrderDraftLineViewModel">
+                                                    <Grid Margin="0,0,0,10" ColumnDefinitions="2.2*,0.8*,0.8*,1*" ColumnSpacing="10">
+                                                        <TextBox Watermark="Товар" Text="{Binding ProductName, Mode=TwoWay}" Padding="12" CornerRadius="12" Background="{DynamicResource SurfaceHover}" BorderBrush="{DynamicResource BorderDefault}" BorderThickness="1" />
+                                                        <TextBox Grid.Column="1" Watermark="Кол-во" Text="{Binding QuantityText, Mode=TwoWay}" Padding="12" CornerRadius="12" Background="{DynamicResource SurfaceHover}" BorderBrush="{DynamicResource BorderDefault}" BorderThickness="1" />
+                                                        <TextBox Grid.Column="2" Watermark="Ед." Text="{Binding Unit, Mode=TwoWay}" Padding="12" CornerRadius="12" Background="{DynamicResource SurfaceHover}" BorderBrush="{DynamicResource BorderDefault}" BorderThickness="1" />
+                                                        <TextBox Grid.Column="3" Watermark="Цена" Text="{Binding UnitPriceText, Mode=TwoWay}" Padding="12" CornerRadius="12" Background="{DynamicResource SurfaceHover}" BorderBrush="{DynamicResource BorderDefault}" BorderThickness="1" />
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </Grid>
+                                </Border>
+
+                                <TextBox Grid.Row="5"
+                                         Watermark="Комментарий для склада и доставки"
+                                         Text="{Binding NewComment, Mode=TwoWay}"
+                                         Padding="12"
+                                         Background="{DynamicResource SurfaceDefault}"
+                                         BorderBrush="{DynamicResource BorderDefault}"
+                                         BorderThickness="1"
+                                         CornerRadius="12" />
+
+                                <Grid Grid.Row="6" ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                                    <CheckBox Content="Приоритетный заказ"
+                                              IsChecked="{Binding NewIsPriority, Mode=TwoWay}"
+                                              VerticalAlignment="Center" />
+                                    <TextBlock Grid.Column="1"
+                                               Text="{Binding FormMessage}"
+                                               IsVisible="{Binding HasFormMessage}"
+                                               VerticalAlignment="Center"
+                                               TextWrapping="Wrap"
+                                               Foreground="#D9485F" />
+                                    <Button Grid.Column="2"
+                                            Content="Сохранить заказ"
+                                            Command="{Binding SubmitNewOrderCommand}"
+                                            Padding="18,10"
+                                            CornerRadius="12"
+                                            Background="{DynamicResource AccentBlue}"
+                                            Foreground="{DynamicResource PrimaryHoverForeground}"
+                                            FontWeight="SemiBold" />
+                                </Grid>
+                            </Grid>
+                        </Border>
+
+                        <ListBox Grid.Row="3"
+                                 ItemsSource="{Binding Orders}"
+                                 SelectedItem="{Binding SelectedOrder, Mode=TwoWay}"
+                                 BorderThickness="0"
+                                 Background="Transparent">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate x:DataType="vm:OrderCardViewModel">
+                                    <Border Margin="0,0,0,12" Padding="18" CornerRadius="18" Background="{DynamicResource SurfaceHover}" BorderBrush="{DynamicResource BorderDefault}" BorderThickness="1">
+                                        <Grid RowDefinitions="Auto,Auto,Auto" RowSpacing="10">
+                                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                                                <StackPanel Orientation="Horizontal" Spacing="10">
+                                                    <TextBlock Text="{Binding Number}" FontSize="18" FontWeight="SemiBold" Foreground="{DynamicResource PrimaryForeground}" />
+                                                    <Border Padding="10,4" CornerRadius="999" Background="{Binding StatusBackground}">
+                                                        <TextBlock Text="{Binding StatusTitle}" FontSize="12" FontWeight="SemiBold" Foreground="{Binding StatusBrush}" />
+                                                    </Border>
+                                                    <Border IsVisible="{Binding IsPriority}" Padding="10,4" CornerRadius="999" Background="#23D9485F">
+                                                        <TextBlock Text="Приоритет" FontSize="12" FontWeight="SemiBold" Foreground="#D9485F" />
+                                                    </Border>
+                                                </StackPanel>
+                                                <TextBlock Grid.Column="1" Text="{Binding TotalAmount}" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource PrimaryForeground}" />
+                                            </Grid>
+                                            <StackPanel Grid.Row="1" Spacing="4">
+                                                <TextBlock Text="{Binding RetailPointName}" FontSize="16" FontWeight="Medium" Foreground="{DynamicResource PrimaryForeground}" />
+                                                <TextBlock Text="{Binding AgentName}" Foreground="{DynamicResource SecondaryForeground}" />
+                                                <TextBlock Text="{Binding Address}" TextWrapping="Wrap" Foreground="{DynamicResource SecondaryForeground}" />
+                                            </StackPanel>
+                                            <Grid Grid.Row="2" ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                                                <StackPanel Spacing="4">
+                                                    <TextBlock Text="{Binding TimelineText}" Foreground="{DynamicResource SecondaryForeground}" />
+                                                    <TextBlock Text="{Binding MetaText}" Foreground="{DynamicResource SecondaryForeground}" />
+                                                </StackPanel>
+                                                <TextBlock Grid.Column="1" Text="{Binding PaymentType}" VerticalAlignment="Bottom" Foreground="{DynamicResource PrimaryForeground}" FontWeight="Medium" />
+                                            </Grid>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Grid>
+                </Border>
+
+                <Border Grid.Column="1" Padding="20" CornerRadius="20" Background="{DynamicResource SurfaceDefault}">
+                    <ScrollViewer>
+                        <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto" RowSpacing="16">
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                                <StackPanel Spacing="6">
+                                    <TextBlock Text="{Binding SelectedOrder.Number}" FontSize="26" FontWeight="Bold" Foreground="{DynamicResource PrimaryForeground}" />
+                                    <TextBlock Text="{Binding SelectedOrder.RetailPointName}" FontSize="18" Foreground="{DynamicResource PrimaryForeground}" />
+                                    <TextBlock Text="{Binding SelectedOrder.Address}" TextWrapping="Wrap" Foreground="{DynamicResource SecondaryForeground}" />
+                                </StackPanel>
+                                <Border Grid.Column="1" Padding="12,6" CornerRadius="999" Background="{Binding SelectedOrder.StatusBackground}">
+                                    <TextBlock Text="{Binding SelectedOrder.StatusTitle}" FontWeight="SemiBold" Foreground="{Binding SelectedOrder.StatusBrush}" />
+                                </Border>
+                            </Grid>
+
+                            <Grid Grid.Row="1" ColumnDefinitions="*,*" ColumnSpacing="12">
+                                <Border Padding="16" CornerRadius="16" Background="{DynamicResource SurfaceHover}">
+                                    <StackPanel Spacing="6">
+                                        <TextBlock Text="Агент" Foreground="{DynamicResource SecondaryForeground}" />
+                                        <TextBlock Text="{Binding SelectedOrder.AgentName}" FontSize="18" FontWeight="SemiBold" Foreground="{DynamicResource PrimaryForeground}" />
+                                        <TextBlock Text="{Binding SelectedOrder.City}" Foreground="{DynamicResource SecondaryForeground}" />
+                                    </StackPanel>
+                                </Border>
+                                <Border Grid.Column="1" Padding="16" CornerRadius="16" Background="{DynamicResource SurfaceHover}">
+                                    <StackPanel Spacing="6">
+                                        <TextBlock Text="Оплата" Foreground="{DynamicResource SecondaryForeground}" />
+                                        <TextBlock Text="{Binding SelectedOrder.PaymentType}" FontSize="18" FontWeight="SemiBold" Foreground="{DynamicResource PrimaryForeground}" />
+                                        <TextBlock Text="{Binding SelectedOrder.TotalAmount}" Foreground="{DynamicResource SecondaryForeground}" />
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+
+                            <Border Grid.Row="2" Padding="18" CornerRadius="18" Background="{DynamicResource SurfaceHover}">
+                                <Grid RowDefinitions="Auto,Auto,*" RowSpacing="12">
+                                    <TextBlock Text="Состав заказа" FontSize="20" FontWeight="SemiBold" Foreground="{DynamicResource PrimaryForeground}" />
+                                    <Grid Grid.Row="1" ColumnDefinitions="2.8*,1.1*,1.1*,1.1*">
+                                        <TextBlock Text="Товар" FontWeight="Medium" Foreground="{DynamicResource SecondaryForeground}" />
+                                        <TextBlock Grid.Column="1" Text="Кол-во" FontWeight="Medium" HorizontalAlignment="Center" Foreground="{DynamicResource SecondaryForeground}" />
+                                        <TextBlock Grid.Column="2" Text="Цена" FontWeight="Medium" HorizontalAlignment="Center" Foreground="{DynamicResource SecondaryForeground}" />
+                                        <TextBlock Grid.Column="3" Text="Сумма" FontWeight="Medium" HorizontalAlignment="Right" Foreground="{DynamicResource SecondaryForeground}" />
+                                    </Grid>
+                                    <ItemsControl Grid.Row="2" ItemsSource="{Binding SelectedOrder.Lines}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate x:DataType="vm:OrderLineViewModel">
+                                                <Border Margin="0,0,0,10" Padding="14" CornerRadius="14" Background="{DynamicResource SurfaceDefault}">
+                                                    <Grid ColumnDefinitions="2.8*,1.1*,1.1*,1.1*">
+                                                        <TextBlock Text="{Binding Name}" TextWrapping="Wrap" Foreground="{DynamicResource PrimaryForeground}" />
+                                                        <TextBlock Grid.Column="1" Text="{Binding Quantity}" HorizontalAlignment="Center" Foreground="{DynamicResource PrimaryForeground}" />
+                                                        <TextBlock Grid.Column="2" Text="{Binding Price}" HorizontalAlignment="Center" Foreground="{DynamicResource PrimaryForeground}" />
+                                                        <TextBlock Grid.Column="3" Text="{Binding Total}" HorizontalAlignment="Right" FontWeight="SemiBold" Foreground="{DynamicResource PrimaryForeground}" />
+                                                    </Grid>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </Grid>
+                            </Border>
+
+                            <Border Grid.Row="3" Padding="18" CornerRadius="18" Background="{DynamicResource SurfaceHover}">
+                                <StackPanel Spacing="10">
+                                    <TextBlock Text="Комментарий к доставке" FontSize="18" FontWeight="SemiBold" Foreground="{DynamicResource PrimaryForeground}" />
+                                    <TextBlock Text="{Binding SelectedOrder.Comment}" TextWrapping="Wrap" Foreground="{DynamicResource SecondaryForeground}" />
+                                    <TextBlock Text="{Binding SelectedOrder.TimelineText}" Foreground="{DynamicResource SecondaryForeground}" />
+                                </StackPanel>
+                            </Border>
+
+                            <Button Grid.Row="4"
+                                    Content="{Binding SelectedOrderActionText}"
+                                    Command="{Binding AdvanceSelectedOrderCommand}"
+                                    Padding="16"
+                                    CornerRadius="14"
+                                    Background="{DynamicResource AccentBlue}"
+                                    Foreground="{DynamicResource PrimaryHoverForeground}"
+                                    FontSize="16"
+                                    FontWeight="SemiBold" />
+                        </Grid>
+                    </ScrollViewer>
+                </Border>
+            </Grid>
+        </Grid>
+    </Border>
 </UserControl>

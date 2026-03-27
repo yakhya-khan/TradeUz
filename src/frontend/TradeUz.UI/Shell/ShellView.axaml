@@ -1,4 +1,4 @@
-<Window xmlns="https://github.com/avaloniaui"
+﻿<Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="https://github.com/avaloniaui/design"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -27,7 +27,7 @@
                                  CommandParameter="Dashboard">
 				        <StackPanel Orientation="Horizontal" Spacing="15">
 					        <Image Classes="Icon" Source="{DynamicResource IconHome}" Margin="10,0"/>
-                            <TextBlock Text="Bosh saxifa" IsVisible="{Binding SideMenuExpanded}" VerticalAlignment="Center"/>
+                            <TextBlock Text="Главная" IsVisible="{Binding SideMenuExpanded}" VerticalAlignment="Center"/>
                         </StackPanel>
                      </RadioButton>
                     <RadioButton Classes="ModernRadio" GroupName="SidebarMenu" 
@@ -36,7 +36,7 @@
                                  CommandParameter="Supply">
 				        <StackPanel Orientation="Horizontal" Spacing="15">
 					        <Image Classes="Icon" Source="{DynamicResource IconSupply}" Margin="10,0"/>
-                            <TextBlock Text="Ta'minot" IsVisible="{Binding SideMenuExpanded}" VerticalAlignment="Center"/>
+                            <TextBlock Text="Доставка" IsVisible="{Binding SideMenuExpanded}" VerticalAlignment="Center"/>
                         </StackPanel>
                      </RadioButton>
                     <RadioButton Classes="ModernRadio" GroupName="SidebarMenu" 
@@ -63,7 +63,7 @@
                                  CommandParameter="Orders">
 				        <StackPanel Orientation="Horizontal" Spacing="15">
 					        <Image Classes="Icon" Source="{DynamicResource IconOrders}" Margin="10,0"/>
-                            <TextBlock Text="Buyurtmalar" IsVisible="{Binding SideMenuExpanded}" VerticalAlignment="Center"/>
+                            <TextBlock Text="Заказы" IsVisible="{Binding SideMenuExpanded}" VerticalAlignment="Center"/>
                         </StackPanel>
                      </RadioButton>
 
@@ -82,3 +82,4 @@
     </Grid>
 
 </Window>
+

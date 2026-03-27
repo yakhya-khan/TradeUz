@@ -2,12 +2,8 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using TradeUz.UI.Pages.Dashboard;
-using TradeUz.UI.Pages.Orders;
-using TradeUz.UI.Shell;
-using TradeUz.UI.Core;
 using TradeUz.UI.Infrastructure.Theming;
+using TradeUz.UI.Shell;
 
 namespace TradeUz.UI.Bootstrap
 {
@@ -21,37 +17,18 @@ namespace TradeUz.UI.Bootstrap
         public override void OnFrameworkInitializationCompleted()
         {
             var services = new ServiceCollection();
-            ConfigureServices(services);
+            services.AddApplicationServices();
             var provider = services.BuildServiceProvider();
-
 
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 var shell = provider.GetRequiredService<ShellView>();
                 shell.DataContext = provider.GetRequiredService<ShellViewModel>();
-
                 desktop.MainWindow = shell;
-
-                var themeService = provider.GetRequiredService<IThemeService>();
-                themeService.Initialize();
-
+                provider.GetRequiredService<IThemeService>().Initialize();
             }
 
             base.OnFrameworkInitializationCompleted();
         }
-
-        private void ConfigureServices(ServiceCollection services)
-        {
-            services.AddApplicationServices();
-
-        }
-
-        //private void SyncWithSystemTheme()
-        //{
-        //    if (Current is not { } app)
-        //        return;
-        //    // �������� ������� ���� �������
-        //    app.RequestedThemeVariant = app.ActualThemeVariant;
-        //}
     }
 }

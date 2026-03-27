@@ -1,27 +1,163 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+﻿<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:TradeUz.UI.Pages.Dashboard"
-             x:DataType="vm:DashboardViewModel"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="TradeUz.UI.Pages.Dashboard.DashboardView">
+             xmlns:common="clr-namespace:TradeUz.UI.Pages.Common"
+             mc:Ignorable="d"
+             d:DesignWidth="1200"
+             d:DesignHeight="780"
+             x:Class="TradeUz.UI.Pages.Dashboard.DashboardView"
+             x:DataType="vm:DashboardViewModel">
     <Design.DataContext>
         <vm:DashboardViewModel />
     </Design.DataContext>
-    <Grid >
-		
-   <TextBlock Text="Dashboard Page"
-               FontSize="24"
-               HorizontalAlignment="Center"
-               VerticalAlignment="Center"/>
-    <TextBox Width="200" Text="{Binding WelcomeMessage}"
-             HorizontalAlignment="Center"
-             VerticalAlignment="Top"
-             Margin="0,20,0,0"/>
-    <TextBox Width="200" Text="{Binding Description}"
-             HorizontalAlignment="Center"
-             VerticalAlignment="Top"
-             Margin="0,80,0,0"/>
-    </Grid>
+
+    <Border Background="{DynamicResource PrimaryBackground}" Padding="22">
+        <Grid RowDefinitions="Auto,Auto,*" RowSpacing="18">
+            <Border Padding="30" CornerRadius="24" Background="{DynamicResource PrimaryGradientBackground}">
+                <Grid ColumnDefinitions="1.4*,0.8*" ColumnSpacing="18">
+                    <StackPanel Spacing="10">
+                        <TextBlock Text="{Binding WelcomeMessage}"
+                                   FontSize="34"
+                                   FontWeight="Bold"
+                                   Foreground="{DynamicResource PrimaryForeground}" />
+                        <TextBlock Text="{Binding Description}"
+                                   FontSize="15"
+                                   TextWrapping="Wrap"
+                                   MaxWidth="760"
+                                   Foreground="{DynamicResource SecondaryForeground}" />
+                    </StackPanel>
+
+                    <Border Grid.Column="1"
+                            Padding="20"
+                            CornerRadius="18"
+                            Background="#26FFFFFF">
+                        <StackPanel Spacing="10">
+                            <TextBlock Text="Сегодня в фокусе"
+                                       FontSize="16"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource PrimaryForeground}" />
+                            <ItemsControl ItemsSource="{Binding FocusItems}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Margin="0,0,0,8"
+                                                Padding="12"
+                                                CornerRadius="12"
+                                                Background="#24FFFFFF">
+                                            <TextBlock Text="{Binding}"
+                                                       TextWrapping="Wrap"
+                                                       Foreground="{DynamicResource PrimaryForeground}" />
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </Border>
+
+            <ItemsControl Grid.Row="1" ItemsSource="{Binding Metrics}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="common:MetricCardViewModel">
+                        <Border Width="285"
+                                Margin="0,0,16,16"
+                                Padding="18"
+                                CornerRadius="18"
+                                Background="{DynamicResource SurfaceDefault}">
+                            <Grid RowDefinitions="Auto,Auto,Auto" RowSpacing="10">
+                                <Border Width="44"
+                                        Height="44"
+                                        CornerRadius="12"
+                                        Background="{Binding AccentBackground}">
+                                    <Border BorderBrush="{Binding AccentBrush}"
+                                            BorderThickness="2"
+                                            CornerRadius="12" />
+                                </Border>
+                                <TextBlock Grid.Row="1"
+                                           Text="{Binding Value}"
+                                           FontSize="28"
+                                           FontWeight="Bold"
+                                           Foreground="{DynamicResource PrimaryForeground}" />
+                                <StackPanel Grid.Row="2" Spacing="4">
+                                    <TextBlock Text="{Binding Title}"
+                                               FontWeight="SemiBold"
+                                               Foreground="{DynamicResource PrimaryForeground}" />
+                                    <TextBlock Text="{Binding Subtitle}"
+                                               TextWrapping="Wrap"
+                                               Foreground="{DynamicResource SecondaryForeground}" />
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <Grid Grid.Row="2" ColumnDefinitions="1.1*,0.9*" ColumnSpacing="18">
+                <Border Padding="22"
+                        CornerRadius="20"
+                        Background="{DynamicResource SurfaceDefault}">
+                    <Grid RowDefinitions="Auto,*" RowSpacing="16">
+                        <TextBlock Text="Сквозной процесс"
+                                   FontSize="24"
+                                   FontWeight="SemiBold"
+                                   Foreground="{DynamicResource PrimaryForeground}" />
+                        <ItemsControl Grid.Row="1" ItemsSource="{Binding WorkflowSteps}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="vm:WorkflowStepViewModel">
+                                    <Border Margin="0,0,0,14"
+                                            Padding="18"
+                                            CornerRadius="18"
+                                            Background="{DynamicResource SurfaceHover}">
+                                        <StackPanel Spacing="8">
+                                            <TextBlock Text="{Binding Title}"
+                                                       FontSize="18"
+                                                       FontWeight="SemiBold"
+                                                       Foreground="{DynamicResource PrimaryForeground}" />
+                                            <TextBlock Text="{Binding Description}"
+                                                       TextWrapping="Wrap"
+                                                       Foreground="{DynamicResource SecondaryForeground}" />
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </Grid>
+                </Border>
+
+                <Border Grid.Column="1"
+                        Padding="22"
+                        CornerRadius="20"
+                        Background="{DynamicResource SurfaceDefault}">
+                    <Grid RowDefinitions="Auto,Auto,*" RowSpacing="16">
+                        <TextBlock Text="Что уже можно делать в MVP"
+                                   FontSize="24"
+                                   FontWeight="SemiBold"
+                                   Foreground="{DynamicResource PrimaryForeground}" />
+                        <Border Grid.Row="1" Padding="18" CornerRadius="18" Background="{DynamicResource SurfaceHover}">
+                            <TextBlock Text="1. Принять заказ от агента. 2. Передать его на сборку. 3. Назначить маршрут. 4. Подтвердить доставку по точке."
+                                       TextWrapping="Wrap"
+                                       Foreground="{DynamicResource SecondaryForeground}" />
+                        </Border>
+                        <Border Grid.Row="2" Padding="18" CornerRadius="18" Background="{DynamicResource SurfaceHover}">
+                            <StackPanel Spacing="10">
+                                <TextBlock Text="Следующий шаг разработки"
+                                           FontSize="18"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource PrimaryForeground}" />
+                                <TextBlock Text="Добавить справочники клиентов и товаров, создание нового заказа, сохранение в базу данных и роли: агент, оператор склада, диспетчер, водитель."
+                                           TextWrapping="Wrap"
+                                           Foreground="{DynamicResource SecondaryForeground}" />
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Grid>
+    </Border>
 </UserControl>

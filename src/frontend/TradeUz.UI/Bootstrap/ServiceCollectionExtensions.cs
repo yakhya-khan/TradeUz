@@ -1,13 +1,16 @@
-﻿using TradeUz.UI.Core;
+using System;
+using System.Net.Http;
+using Microsoft.Extensions.DependencyInjection;
+using TradeUz.UI.Core;
 using TradeUz.UI.Infrastructure.Storage;
 using TradeUz.UI.Infrastructure.Theming;
 using TradeUz.UI.Navigation;
 using TradeUz.UI.Pages.Dashboard;
 using TradeUz.UI.Pages.Orders;
-using TradeUz.UI.Shell;
-using Microsoft.Extensions.DependencyInjection;
 using TradeUz.UI.Pages.Sales;
 using TradeUz.UI.Pages.Supply;
+using TradeUz.UI.Services;
+using TradeUz.UI.Shell;
 
 namespace TradeUz.UI.Bootstrap
 {
@@ -15,13 +18,17 @@ namespace TradeUz.UI.Bootstrap
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
-            // Router
+            var apiBaseUrl = Environment.GetEnvironmentVariable("TRADEUZ_API_BASE_URL") ?? "http://localhost:8080/";
+            if (!apiBaseUrl.EndsWith("/", StringComparison.Ordinal))
+            {
+                apiBaseUrl += "/";
+            }
+
             services.AddSingleton<IRouter, Router>();
-
-            // Navigation
             services.AddSingleton<INavigationService, NavigationService>();
+            services.AddSingleton(new HttpClient { BaseAddress = new Uri(apiBaseUrl, UriKind.Absolute) });
+            services.AddSingleton<ITradeOperationsService, ApiTradeOperationsService>();
 
-            // ViewsModels
             services.AddSingleton<ShellViewModel>();
             services.AddTransient<DashboardViewModel>();
             services.AddTransient<SupplyViewModel>();
@@ -29,13 +36,8 @@ namespace TradeUz.UI.Bootstrap
             services.AddTransient<RetailSalesViewModel>();
             services.AddTransient<OrdersViewModel>();
 
-            // Views
             services.AddSingleton<ShellView>();
-
-            // roles
             services.AddSingleton<IUserContext, UserContext>();
-
-            // theming
             services.AddSingleton<ILocalSettingsService, LocalSettingsService>();
             services.AddSingleton<IThemeService, ThemeService>();
 

@@ -1,4 +1,4 @@
-﻿namespace TradeUz.UI.Controls.Masking;
+﻿namespace TradeUz.UI.Controls.Inputs.Masking;
 
 public interface IMaskEngine
 {

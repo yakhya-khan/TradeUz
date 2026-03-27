@@ -88,7 +88,7 @@
                                        HorizontalAlignment="Right"
                                        Foreground="{DynamicResource PrimaryForeground}" />
                         </Border>
-                        <Grid ColumnDefinitions="*,*,*" RowDefinitions="Auto,Auto,Auto,Auto" RowSpacing="8" ColumnSpacing="8">
+                        <Grid ColumnDefinitions="*,*,*" RowDefinitions="Auto,Auto,Auto,Auto" RowSpacing="18" ColumnSpacing="8">
                             <Button Content="7" Grid.Row="0" Grid.Column="0" Padding="25,14" CornerRadius="10" Background="{DynamicResource SurfaceHover}" Foreground="{DynamicResource PrimaryForeground}" />
                             <Button Content="8" Grid.Row="0" Grid.Column="1" Padding="25,14" CornerRadius="10" Background="{DynamicResource SurfaceHover}" Foreground="{DynamicResource PrimaryForeground}" />
                             <Button Content="9" Grid.Row="0" Grid.Column="2" Padding="25,14" CornerRadius="10" Background="{DynamicResource SurfaceHover}" Foreground="{DynamicResource PrimaryForeground}" />

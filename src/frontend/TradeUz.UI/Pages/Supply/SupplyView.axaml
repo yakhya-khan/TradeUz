@@ -1,55 +1,308 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+﻿<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:TradeUz.UI.Pages.Supply"
+             xmlns:common="clr-namespace:TradeUz.UI.Pages.Common"
              xmlns:i="using:Avalonia.Xaml.Interactivity"
              xmlns:behaviors="clr-namespace:TradeUz.UI.Controls.Behaviors"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d"
+             d:DesignWidth="1240"
+             d:DesignHeight="780"
              x:Class="TradeUz.UI.Pages.Supply.SupplyView"
              x:DataType="vm:SupplyViewModel">
-    <Design.DataContext>		
-        <vm:SupplyViewModel/>    
+    <Design.DataContext>
+        <vm:SupplyViewModel />
     </Design.DataContext>
-    <Grid>
-        <Border Background="{DynamicResource ResourceKey=PrimaryGradientBackground}" 
-                CornerRadius="8" Padding="16" Margin="20">
-            <StackPanel Spacing="10">
-                <TextBlock Text="Ta'minot ma'lumotlari" FontSize="18" FontWeight="Bold"/>
-                <StackPanel Orientation="Horizontal" Spacing="10">
-                    <TextBlock Text="�������:" VerticalAlignment="Center"/>
-                    <TextBox Text="{Binding NumericValue, Mode=TwoWay}"
-                             Width="200">
-                        <i:Interaction.Behaviors>
-                            <behaviors:MaskBehavior
-                                Decimals="2"
-                                
-                            />
-                        </i:Interaction.Behaviors>
-                     </TextBox>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Spacing="10">
-                    <TextBlock Text="Ta'minot miqdori:" VerticalAlignment="Center"/>
-                    <TextBox Width="150">
-    <i:Interaction.Behaviors>
-        <behaviors:MaskBehavior/>
-    </i:Interaction.Behaviors>
-</TextBox>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Spacing="10">
-                    <TextBlock Text="{Binding InfoText}" VerticalAlignment="Center"/>
-                </StackPanel>
-                <StackPanel>
-                    <CalendarDatePicker
-                        Width="200"
-                        SelectedDate="{Binding SupplyDate, Mode=TwoWay}">
-                        <i:Interaction.Behaviors>
-                            <behaviors:DateMaskBehavior/>
-                        </i:Interaction.Behaviors>
-                    </CalendarDatePicker>
-                </StackPanel>
-            </StackPanel>
-            
+
+    <Border Background="{DynamicResource PrimaryBackground}" Padding="22">
+        <Grid RowDefinitions="Auto,Auto,*" RowSpacing="18">
+            <Border Padding="28" CornerRadius="22" Background="{DynamicResource SurfaceDefault}">
+                <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto">
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="Доставка по торговым точкам"
+                                   FontSize="28"
+                                   FontWeight="SemiBold"
+                                   Foreground="{DynamicResource PrimaryForeground}" />
+                        <TextBlock Text="Диспетчер видит маршруты, водителей, точки выгрузки и может закрывать доставку по каждой остановке."
+                                   FontSize="14"
+                                   TextWrapping="Wrap"
+                                   MaxWidth="760"
+                                   Foreground="{DynamicResource SecondaryForeground}" />
+                    </StackPanel>
+
+                    <Border Grid.Column="1"
+                            Padding="18,14"
+                            CornerRadius="18"
+                            Background="{DynamicResource PrimaryGradientBackground}">
+                        <StackPanel Spacing="6">
+                            <TextBlock Text="Дата контроля"
+                                       Foreground="{DynamicResource SecondaryForeground}" />
+                            <CalendarDatePicker SelectedDate="{Binding SupplyDate, Mode=TwoWay}"
+                                                Width="180">
+                                <i:Interaction.Behaviors>
+                                    <behaviors:DateMaskBehavior />
+                                </i:Interaction.Behaviors>
+                            </CalendarDatePicker>
+                        </StackPanel>
+                    </Border>
+                </Grid>
             </Border>
-    </Grid>
+
+            <ItemsControl Grid.Row="1" ItemsSource="{Binding Metrics}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="common:MetricCardViewModel">
+                        <Border Width="285"
+                                Margin="0,0,16,16"
+                                Padding="18"
+                                CornerRadius="18"
+                                Background="{DynamicResource SurfaceDefault}">
+                            <Grid RowDefinitions="Auto,Auto,Auto" RowSpacing="10">
+                                <Border Width="44"
+                                        Height="44"
+                                        CornerRadius="12"
+                                        Background="{Binding AccentBackground}">
+                                    <Border BorderBrush="{Binding AccentBrush}"
+                                            BorderThickness="2"
+                                            CornerRadius="12" />
+                                </Border>
+                                <TextBlock Grid.Row="1"
+                                           Text="{Binding Value}"
+                                           FontSize="28"
+                                           FontWeight="Bold"
+                                           Foreground="{DynamicResource PrimaryForeground}" />
+                                <StackPanel Grid.Row="2" Spacing="4">
+                                    <TextBlock Text="{Binding Title}"
+                                               FontWeight="SemiBold"
+                                               Foreground="{DynamicResource PrimaryForeground}" />
+                                    <TextBlock Text="{Binding Subtitle}"
+                                               TextWrapping="Wrap"
+                                               Foreground="{DynamicResource SecondaryForeground}" />
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <Grid Grid.Row="2" ColumnDefinitions="1.05*,0.95*" ColumnSpacing="18">
+                <Border Padding="20"
+                        CornerRadius="20"
+                        Background="{DynamicResource SurfaceDefault}">
+                    <Grid RowDefinitions="Auto,Auto,*" RowSpacing="16">
+                        <TextBlock Text="Маршруты"
+                                   FontSize="22"
+                                   FontWeight="SemiBold"
+                                   Foreground="{DynamicResource PrimaryForeground}" />
+
+                        <ComboBox Grid.Row="1"
+                                  ItemsSource="{Binding RouteFilters}"
+                                  SelectedItem="{Binding SelectedRouteFilter, Mode=TwoWay}"
+                                  Background="{DynamicResource SurfaceHover}"
+                                  BorderBrush="{DynamicResource BorderDefault}"
+                                  BorderThickness="1"
+                                  CornerRadius="12" />
+
+                        <ListBox Grid.Row="2"
+                                 ItemsSource="{Binding Routes}"
+                                 SelectedItem="{Binding SelectedRoute, Mode=TwoWay}"
+                                 BorderThickness="0"
+                                 Background="Transparent">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate x:DataType="vm:RouteCardViewModel">
+                                    <Border Margin="0,0,0,12"
+                                            Padding="18"
+                                            CornerRadius="18"
+                                            Background="{DynamicResource SurfaceHover}"
+                                            BorderBrush="{DynamicResource BorderDefault}"
+                                            BorderThickness="1">
+                                        <Grid RowDefinitions="Auto,Auto,Auto" RowSpacing="10">
+                                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                                                <StackPanel Orientation="Horizontal" Spacing="10">
+                                                    <TextBlock Text="{Binding RouteCode}"
+                                                               FontSize="18"
+                                                               FontWeight="SemiBold"
+                                                               Foreground="{DynamicResource PrimaryForeground}" />
+                                                    <Border Padding="10,4"
+                                                            CornerRadius="999"
+                                                            Background="{Binding StatusBackground}">
+                                                        <TextBlock Text="{Binding StatusTitle}"
+                                                                   FontSize="12"
+                                                                   FontWeight="SemiBold"
+                                                                   Foreground="{Binding StatusBrush}" />
+                                                    </Border>
+                                                </StackPanel>
+                                                <TextBlock Grid.Column="1"
+                                                           Text="{Binding LoadAmount}"
+                                                           FontWeight="Bold"
+                                                           Foreground="{DynamicResource PrimaryForeground}" />
+                                            </Grid>
+                                            <StackPanel Grid.Row="1" Spacing="4">
+                                                <TextBlock Text="{Binding Region}"
+                                                           FontSize="16"
+                                                           FontWeight="Medium"
+                                                           Foreground="{DynamicResource PrimaryForeground}" />
+                                                <TextBlock Text="{Binding SummaryText}"
+                                                           Foreground="{DynamicResource SecondaryForeground}" />
+                                                <TextBlock Text="{Binding VehicleNumber}"
+                                                           Foreground="{DynamicResource SecondaryForeground}" />
+                                            </StackPanel>
+                                            <Grid Grid.Row="2" ColumnDefinitions="*,Auto">
+                                                <TextBlock Text="{Binding ProgressText}"
+                                                           Foreground="{DynamicResource SecondaryForeground}" />
+                                                <TextBlock Grid.Column="1"
+                                                           Text="{Binding DispatcherName}"
+                                                           Foreground="{DynamicResource PrimaryForeground}"
+                                                           FontWeight="Medium" />
+                                            </Grid>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Grid>
+                </Border>
+
+                <Border Grid.Column="1"
+                        Padding="20"
+                        CornerRadius="20"
+                        Background="{DynamicResource SurfaceDefault}">
+                    <ScrollViewer>
+                        <Grid RowDefinitions="Auto,Auto,Auto,Auto" RowSpacing="16">
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                                <StackPanel Spacing="6">
+                                    <TextBlock Text="{Binding SelectedRoute.RouteCode}"
+                                               FontSize="26"
+                                               FontWeight="Bold"
+                                               Foreground="{DynamicResource PrimaryForeground}" />
+                                    <TextBlock Text="{Binding SelectedRoute.Region}"
+                                               FontSize="18"
+                                               Foreground="{DynamicResource PrimaryForeground}" />
+                                    <TextBlock Text="{Binding SelectedRoute.ProgressText}"
+                                               Foreground="{DynamicResource SecondaryForeground}" />
+                                </StackPanel>
+                                <Border Grid.Column="1"
+                                        Padding="12,6"
+                                        CornerRadius="999"
+                                        Background="{Binding SelectedRoute.StatusBackground}">
+                                    <TextBlock Text="{Binding SelectedRoute.StatusTitle}"
+                                               FontWeight="SemiBold"
+                                               Foreground="{Binding SelectedRoute.StatusBrush}" />
+                                </Border>
+                            </Grid>
+
+                            <Grid Grid.Row="1" ColumnDefinitions="*,*" ColumnSpacing="12">
+                                <Border Padding="16" CornerRadius="16" Background="{DynamicResource SurfaceHover}">
+                                    <StackPanel Spacing="6">
+                                        <TextBlock Text="Водитель" Foreground="{DynamicResource SecondaryForeground}" />
+                                        <TextBlock Text="{Binding SelectedRoute.DriverName}"
+                                                   FontSize="18"
+                                                   FontWeight="SemiBold"
+                                                   Foreground="{DynamicResource PrimaryForeground}" />
+                                        <TextBlock Text="{Binding SelectedRoute.VehicleNumber}"
+                                                   Foreground="{DynamicResource SecondaryForeground}" />
+                                    </StackPanel>
+                                </Border>
+                                <Border Grid.Column="1" Padding="16" CornerRadius="16" Background="{DynamicResource SurfaceHover}">
+                                    <StackPanel Spacing="6">
+                                        <TextBlock Text="Диспетчер" Foreground="{DynamicResource SecondaryForeground}" />
+                                        <TextBlock Text="{Binding SelectedRoute.DispatcherName}"
+                                                   FontSize="18"
+                                                   FontWeight="SemiBold"
+                                                   Foreground="{DynamicResource PrimaryForeground}" />
+                                        <TextBlock Text="{Binding SelectedRoute.PlannedDepartureAt, StringFormat='Выезд: {0:HH:mm}'}"
+                                                   Foreground="{DynamicResource SecondaryForeground}" />
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+
+                            <Border Grid.Row="2" Padding="18" CornerRadius="18" Background="{DynamicResource SurfaceHover}">
+                                <Grid RowDefinitions="Auto,*" RowSpacing="12">
+                                    <TextBlock Text="Остановки маршрута"
+                                               FontSize="20"
+                                               FontWeight="SemiBold"
+                                               Foreground="{DynamicResource PrimaryForeground}" />
+                                    <ItemsControl Grid.Row="1" ItemsSource="{Binding SelectedRoute.Stops}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate x:DataType="vm:StopCardViewModel">
+                                                <Border Margin="0,0,0,12"
+                                                        Padding="16"
+                                                        CornerRadius="16"
+                                                        Background="{DynamicResource SurfaceDefault}">
+                                                    <Grid RowDefinitions="Auto,Auto,Auto" RowSpacing="8">
+                                                        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
+                                                            <Border Width="30"
+                                                                    Height="30"
+                                                                    CornerRadius="15"
+                                                                    Background="{Binding StatusBackground}">
+                                                                <TextBlock Text="{Binding Sequence}"
+                                                                           HorizontalAlignment="Center"
+                                                                           VerticalAlignment="Center"
+                                                                           FontWeight="Bold"
+                                                                           Foreground="{Binding StatusBrush}" />
+                                                            </Border>
+                                                            <StackPanel Grid.Column="1" Spacing="4">
+                                                                <TextBlock Text="{Binding RetailPointName}"
+                                                                           FontSize="16"
+                                                                           FontWeight="SemiBold"
+                                                                           Foreground="{DynamicResource PrimaryForeground}" />
+                                                                <TextBlock Text="{Binding OrderNumber}"
+                                                                           Foreground="{DynamicResource SecondaryForeground}" />
+                                                            </StackPanel>
+                                                            <Border Grid.Column="2"
+                                                                    Padding="10,4"
+                                                                    CornerRadius="999"
+                                                                    Background="{Binding StatusBackground}">
+                                                                <TextBlock Text="{Binding StatusTitle}"
+                                                                           FontSize="12"
+                                                                           FontWeight="SemiBold"
+                                                                           Foreground="{Binding StatusBrush}" />
+                                                            </Border>
+                                                        </Grid>
+                                                        <TextBlock Grid.Row="1"
+                                                                   Text="{Binding Address}"
+                                                                   TextWrapping="Wrap"
+                                                                   Foreground="{DynamicResource SecondaryForeground}" />
+                                                        <Grid Grid.Row="2" ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10">
+                                                            <TextBlock Text="{Binding ContactPhone}"
+                                                                       Foreground="{DynamicResource SecondaryForeground}" />
+                                                            <TextBlock Grid.Column="1"
+                                                                       Text="{Binding PlannedArrivalAt, StringFormat='{}{0:HH:mm}'}"
+                                                                       Foreground="{DynamicResource PrimaryForeground}"
+                                                                       FontWeight="Medium" />
+                                                            <TextBlock Grid.Column="2"
+                                                                       Text="{Binding Amount}"
+                                                                       Foreground="{DynamicResource PrimaryForeground}"
+                                                                       FontWeight="Bold" />
+                                                        </Grid>
+                                                    </Grid>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </Grid>
+                            </Border>
+
+                            <Button Grid.Row="3"
+                                    Content="{Binding SelectedRouteActionText}"
+                                    Command="{Binding ProgressSelectedRouteCommand}"
+                                    Padding="16"
+                                    CornerRadius="14"
+                                    Background="{DynamicResource AccentGreen}"
+                                    Foreground="{DynamicResource PrimaryHoverForeground}"
+                                    FontSize="16"
+                                    FontWeight="SemiBold" />
+                        </Grid>
+                    </ScrollViewer>
+                </Border>
+            </Grid>
+        </Grid>
+    </Border>
 </UserControl>
+
+
