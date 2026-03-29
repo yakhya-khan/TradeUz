@@ -6,6 +6,7 @@ using Avalonia.Xaml.Interactivity;
 using System;
 using System.Globalization;
 using System.Linq;
+using TradeUz.UI.Infrastructure.Localization;
 
 namespace TradeUz.UI.Controls.Behaviors;
 
@@ -17,14 +18,17 @@ public class DateMaskBehavior : Behavior<CalendarDatePicker>
     protected override void OnAttached()
     {
         base.OnAttached();
-        AssociatedObject.TemplateApplied += OnTemplateApplied;
+
+        if (AssociatedObject is { } associatedObject)
+            associatedObject.TemplateApplied += OnTemplateApplied;
     }
 
     protected override void OnDetaching()
     {
         base.OnDetaching();
 
-        AssociatedObject.TemplateApplied -= OnTemplateApplied;
+        if (AssociatedObject is { } associatedObject)
+            associatedObject.TemplateApplied -= OnTemplateApplied;
 
         if (_textBox != null)
         {
@@ -51,7 +55,7 @@ public class DateMaskBehavior : Behavior<CalendarDatePicker>
     // 🚫 Только цифры
     private void OnTextInput(object? sender, TextInputEventArgs e)
     {
-        if (!e.Text.All(char.IsDigit))
+        if (string.IsNullOrEmpty(e.Text) || !e.Text.All(char.IsDigit))
             e.Handled = true;
     }
 
@@ -95,7 +99,7 @@ public class DateMaskBehavior : Behavior<CalendarDatePicker>
         // стрелка влево
         if (e.Key == Key.Left && caret > 0)
         {
-            if (text[caret - 1] == '.')
+            if (text[caret - 1] == '.' || text[caret - 1] == '/')
                 caret--;
 
             _textBox.SelectionStart = caret - 1;
@@ -106,7 +110,7 @@ public class DateMaskBehavior : Behavior<CalendarDatePicker>
         // стрелка вправо
         if (e.Key == Key.Right && caret < text.Length)
         {
-            if (text[caret] == '.')
+            if (text[caret] == '.' || text[caret] == '/')
                 caret++;
 
             if (caret < text.Length)
@@ -138,13 +142,14 @@ public class DateMaskBehavior : Behavior<CalendarDatePicker>
         // ввод цифры — выделить следующую
         if (caret < text.Length) 
         {
-            caret = text[caret] == '.' ? caret + 1 : caret;
+            caret = (text[caret] == '.' || text[caret] == '/')  ? caret + 1 : caret;
             _textBox.SelectionStart = caret;
             _textBox.SelectionEnd = caret + 1;
         }
 
 
-        // автоформат только если курсор в конце
+        // Маска пересобирается только при вводе в конце строки.
+        // Так мы не ломаем позицию каретки при ручном редактировании даты.
         if (caret == text.Length)
         {
             var digits = new string(text.Where(char.IsDigit).ToArray());
@@ -175,7 +180,7 @@ public class DateMaskBehavior : Behavior<CalendarDatePicker>
 
         if (digits.Length < 6)
         {
-            SetInvalid("Sana to'liq kiritilmagan");
+            SetInvalid(LocalizationProvider.Get("ValidationDateIncomplete"));
             return;
         }
 
@@ -193,34 +198,38 @@ public class DateMaskBehavior : Behavior<CalendarDatePicker>
 
         if (month < 1 || month > 12)
         {
-            SetInvalid("Oy xato kiritilgan");
+            SetInvalid(LocalizationProvider.Get("ValidationDateInvalidMonth"));
             return;
         }
 
         if (day < 1 || day > DateTime.DaysInMonth(year, month))
         {
-            SetInvalid("Kun xato kiritilgan");
+            SetInvalid(LocalizationProvider.Get("ValidationDateInvalidDay"));
             return;
         }
 
         var parsed = new DateTime(year, month, day);
 
-        if (AssociatedObject.DisplayDateStart.HasValue &&
-            parsed < AssociatedObject.DisplayDateStart.Value)
+        var associatedObject = AssociatedObject;
+        if (associatedObject == null)
+            return;
+
+        if (associatedObject.DisplayDateStart.HasValue &&
+            parsed < associatedObject.DisplayDateStart.Value)
         {
-            SetInvalid("Sana ruxsat etilgan qiymatdan kichikroq");
+            SetInvalid(LocalizationProvider.Get("ValidationDateBeforeMin"));
             return;
         }
 
-        if (AssociatedObject.DisplayDateEnd.HasValue &&
-            parsed > AssociatedObject.DisplayDateEnd.Value)
+        if (associatedObject.DisplayDateEnd.HasValue &&
+            parsed > associatedObject.DisplayDateEnd.Value)
         {
-            SetInvalid("Sana ruxsat etilgan qiymatdan kattaroq");
+            SetInvalid(LocalizationProvider.Get("ValidationDateAfterMax"));
             return;
         }
 
         ClearInvalid();
-        AssociatedObject.SelectedDate = parsed;
+        associatedObject.SelectedDate = parsed;
         _textBox.Text = parsed.ToString("dd.MM.yyyy");
     }
 
@@ -241,10 +250,4 @@ public class DateMaskBehavior : Behavior<CalendarDatePicker>
         _textBox.Classes.Remove("invalid");
         ToolTip.SetTip(_textBox, null);
     }
-
-    //if (AssociatedObject?.DataContext is SupplyViewModel vm)
-    //{
-    //    //vm.InfoText = nextChar;
-    //    vm.InfoText = tb.CaretIndex.ToString();
-    //}
 }

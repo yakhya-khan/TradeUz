@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="b4b98caf-b43d-4bc6-991a-417b1f179e4a" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.dotnet/.dotnet/TelemetryStorageService/20260313003842_fe964f3b82dc41d786c05f151098f95f.trn" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.dotnet/.dotnet/TelemetryStorageService/20260313003843_bfda23abe0f449069f65c9c80bd1ed82.trn" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.dotnet/.dotnet/TelemetryStorageService/20260313003844_abb22cbc0e7140edafcd0f03967e54b8.trn" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.dotnet/.dotnet/TelemetryStorageService/20260313003853_0d28114e0764426cbbadd810415e66ea.trn" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.dotnet/.dotnet/TelemetryStorageService/20260313003853_4d6c0689502544b4b3ff2d4ea4ef04fd.trn" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.dotnet/.dotnet/TelemetryStorageService/20260313003853_83791519979545749e51c93b5172f381.trn" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.dotnet/.dotnet/TelemetryStorageService/20260313003853_bec22914c01f4c10905dbf65fdce266f.trn" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/frontend/TradeUz.UI/Assets/Icons/exchange.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/frontend/TradeUz.UI/Assets/Icons/home.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/frontend/TradeUz.UI/Assets/Icons/orders.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/frontend/TradeUz.UI/Assets/Icons/supply.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/frontend/TradeUz.UI/Assets/Icons/trade1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/frontend/TradeUz.UI/Bootstrap/ServiceCollectionExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/TradeUz.UI/Bootstrap/ServiceCollectionExtensions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/frontend/TradeUz.UI/Pages/Dashboard/DashboardViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/TradeUz.UI/Pages/Dashboard/DashboardViewModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/frontend/TradeUz.UI/Pages/Orders/OrdersView.axaml" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/TradeUz.UI/Pages/Orders/OrdersView.axaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/frontend/TradeUz.UI/Pages/Orders/OrdersViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/TradeUz.UI/Pages/Orders/OrdersViewModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/frontend/TradeUz.UI/Pages/Supply/SupplyViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/TradeUz.UI/Pages/Supply/SupplyViewModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/frontend/TradeUz.UI/Services/ApiTradeOperationsService.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/frontend/TradeUz.UI/Services/DemoTradeOperationsService.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/frontend/TradeUz.UI/Services/ITradeOperationsService.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/frontend/TradeUz.UI/Shell/ShellView.axaml" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/TradeUz.UI/Shell/ShellView.axaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/frontend/TradeUz.UI/Styles/Controls/Images.axaml" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/TradeUz.UI/Styles/Controls/Images.axaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/frontend/TradeUz.UI/Styles/Controls/RadioButtons.axaml" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/TradeUz.UI/Styles/Controls/RadioButtons.axaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/frontend/TradeUz.UI/Styles/Resources/Icons.axaml" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/TradeUz.UI/Styles/Resources/Icons.axaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/frontend/TradeUz.UI/Styles/Resources/Metrics.axaml" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/TradeUz.UI/Styles/Resources/Metrics.axaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/frontend/TradeUz.UI/TradeUz.UI.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/TradeUz.UI/TradeUz.UI.csproj" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 0
+}]]></component>
+  <component name="ProjectId" id="3BaCRcmjov3uzHpyqfhlDjBp2Jv" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "git-widget-placeholder": "master",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b4b98caf-b43d-4bc6-991a-417b1f179e4a" name="Changes" comment="" />
+      <created>1774717790144</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1774717790144</updated>
+      <workItem from="1774717793586" duration="51000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
+  <component name="VcsManagerConfiguration">
+    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="DotNet_Exception_Breakpoints">
+          <properties exception="System.OperationCanceledException" breakIfHandledByOtherCode="false" displayValue="System.OperationCanceledException" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+        <breakpoint enabled="true" type="DotNet_Exception_Breakpoints">
+          <properties exception="System.Threading.Tasks.TaskCanceledException" breakIfHandledByOtherCode="false" displayValue="System.Threading.Tasks.TaskCanceledException" />
+          <option name="timeStamp" value="2" />
+        </breakpoint>
+        <breakpoint enabled="true" type="DotNet_Exception_Breakpoints">
+          <properties exception="System.Threading.ThreadAbortException" breakIfHandledByOtherCode="false" displayValue="System.Threading.ThreadAbortException" />
+          <option name="timeStamp" value="3" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

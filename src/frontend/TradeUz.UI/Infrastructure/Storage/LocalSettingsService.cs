@@ -15,6 +15,7 @@ public class LocalSettingsService : ILocalSettingsService
         var appData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
         var folder = Path.Combine(appData, "TradeUz.UI");
 
+        // Настройки сохраняем в профиле пользователя, а не рядом с exe.
         Directory.CreateDirectory(folder);
 
         _filePath = Path.Combine(folder, "settings.json");
@@ -29,6 +30,7 @@ public class LocalSettingsService : ILocalSettingsService
             }
             catch
             {
+                // Если файл повреждён, запускаем приложение с пустыми настройками.
                 _settings = new Dictionary<string, string>();
             }
         }
@@ -60,6 +62,7 @@ public class LocalSettingsService : ILocalSettingsService
 
     private void Persist()
     {
+        // Объём настроек маленький, поэтому просто пересохраняем весь файл.
         var json = JsonSerializer.Serialize(_settings, new JsonSerializerOptions
         {
             WriteIndented = true

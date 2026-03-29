@@ -5,7 +5,7 @@
         <StackPanel Spacing="12">
             <RadioButton Classes="ModernRadio" GroupName="group1" Tag="{DynamicResource AccentTrade}">
 				<StackPanel Orientation="Horizontal" Spacing="10">
-					<Image Classes="Icon" Source="{DynamicResource IconTrade}"/>
+					<Path Classes="SidebarIcon" Data="{DynamicResource IconTrade}"/>
                     <TextBlock Text="Radio Button 1"/>
                 </StackPanel>
             </RadioButton>
@@ -13,7 +13,7 @@
                          Tag="{DynamicResource AccentBlue}"/>
             <RadioButton Classes="ModernRadio" GroupName="group1" IsEnabled="False" Tag="{DynamicResource AccentBlue}">
 				<StackPanel Orientation="Horizontal" Spacing="10">
-					<Image Classes="Icon" Source="{DynamicResource IconTrade}"/>
+					<Path Classes="SidebarIcon" Data="{DynamicResource IconTrade}"/>
                     <TextBlock Text="Radio Button 1"/>
                 </StackPanel>
 
@@ -52,7 +52,7 @@
                         Content="{TemplateBinding Content}"
                         Margin="10,2,0,0"
                         FontWeight="Medium"
-                        FontSize="16"
+                        FontSize="15"
                         VerticalAlignment="Center"/>
                 </Border>
             </ControlTemplate>
@@ -83,15 +83,22 @@
 		<Setter Property="Foreground" Value="{TemplateBinding Tag}"/>
     </Style>
 
+    <Style Selector="RadioButton.ModernRadio:pointerover Path.SidebarIcon">
+        <Setter Property="Fill" Value="{Binding $parent[RadioButton].Tag}"/>
+    </Style>
+
     <!-- Checked (ACTIVE STATE) -->
     <Style Selector="RadioButton.ModernRadio:checked /template/Border">
         <Setter Property="BorderThickness" Value="6,0,0,0"/>
         <Setter Property="BorderBrush" Value="{TemplateBinding Tag}"/>
         <Setter Property="Background" Value="{DynamicResource SurfaceActive}"/>
-        <!--<Setter Property="Background" Value="#1F2347"/>-->
     </Style>
     <Style Selector="RadioButton.ModernRadio:checked /template/ContentPresenter">
 		<Setter Property="Foreground" Value="{TemplateBinding Tag}"/>
+    </Style>
+
+    <Style Selector="RadioButton.ModernRadio:checked Path.SidebarIcon">
+        <Setter Property="Fill" Value="{Binding $parent[RadioButton].Tag}"/>
     </Style>
 
     <!-- Disabled -->

@@ -1,4 +1,5 @@
-﻿using Avalonia;
+using System;
+using Avalonia;
 using Avalonia.Styling;
 using TradeUz.UI.Infrastructure.Storage;
 
@@ -14,11 +15,14 @@ public class ThemeService : IThemeService
         _settings = settings;
     }
 
+    public event EventHandler? ThemeChanged;
+
     public ThemeVariant CurrentTheme =>
         Application.Current?.RequestedThemeVariant ?? ThemeVariant.Light;
 
     public void Initialize()
     {
+        // При запуске восстанавливаем последнюю выбранную тему пользователя.
         if (Application.Current == null)
             return;
 
@@ -49,9 +53,14 @@ public class ThemeService : IThemeService
         if (Application.Current == null)
             return;
 
+        // RequestedThemeVariant переключает словари темы для всего приложения.
         Application.Current.RequestedThemeVariant = variant;
 
-        _settings.Save(ThemeKey,
+        _settings.Save(
+            ThemeKey,
             variant == ThemeVariant.Dark ? "Dark" : "Light");
+
+        // Событие нужно shell и другим viewmodel для обновления иконок и подсказок.
+        ThemeChanged?.Invoke(this, EventArgs.Empty);
     }
 }

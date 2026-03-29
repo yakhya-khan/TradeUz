@@ -11,6 +11,8 @@
     <!-- ����������� -->
     <SolidColorBrush x:Key="SurfaceDefault" Color="#FFFFFF"/>
     <SolidColorBrush x:Key="SurfaceHover" Color="#F1F3FA"/>
+    <SolidColorBrush x:Key="SurfaceHoverClose" Color="#C50F1F"/>
+    <SolidColorBrush x:Key="SurfaceActiveClose" Color="#C50F1F"/>
     <SolidColorBrush x:Key="SurfaceActive" Color="#E8ECF8"/>
 
     <!-- ================= BORDERS ================= -->

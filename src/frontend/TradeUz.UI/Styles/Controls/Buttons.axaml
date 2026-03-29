@@ -1,0 +1,185 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <Design.PreviewWith>
+    <Border Padding="20">
+        <StackPanel Orientation="Horizontal" Spacing="10">
+            <Button Classes="UtilityButton" Content="EN" 
+                    HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+            <Button Classes="UtilityButton">
+                <Path Data="M12 2a1 1 0 0 1 1 1v2.1a7.9 7.9 0 0 1 2.64 1.09l1.49-1.49a1 1 0 1 1 1.41 1.41l-1.49 1.49A7.9 7.9 0 0 1 18.9 11H21a1 1 0 1 1 0 2h-2.1a7.9 7.9 0 0 1-1.09 2.64l1.49 1.49a1 1 0 1 1-1.41 1.41l-1.49-1.49A7.9 7.9 0 0 1 13 18.9V21a1 1 0 1 1-2 0v-2.1a7.9 7.9 0 0 1-2.64-1.09l-1.49 1.49a1 1 0 1 1-1.41-1.41l1.49-1.49A7.9 7.9 0 0 1 5.1 13H3a1 1 0 1 1 0-2h2.1a7.9 7.9 0 0 1 1.09-2.64L4.7 6.87a1 1 0 0 1 1.41-1.41l1.49 1.49A7.9 7.9 0 0 1 11 5.1V3a1 1 0 0 1 1-1Zm0 6a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z"
+                      Width="18"
+                      Height="18"
+                      Stretch="Uniform"
+                      Fill="{DynamicResource PrimaryForeground}"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center" />
+            </Button>
+            <Button Classes="TitleBarCloseButton" Content="X">
+                
+            </Button>
+        </StackPanel>
+    </Border>
+  </Design.PreviewWith>
+
+    <Style Selector="Button.UtilityButton">
+        <Setter Property="Width" Value="32" />
+        <Setter Property="Height" Value="32" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="FontSize" Value="11" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Background" Value="{DynamicResource SurfaceDefault}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource BorderDefault}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="10" />
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryForeground}" />
+    </Style>
+
+    <Style Selector="Button.UtilityButton:pointerover">
+        <Setter Property="Background" Value="{DynamicResource SurfaceHover}" />
+    </Style>
+
+    <Style Selector="Button.UtilityButton:pressed">
+        <Setter Property="Background" Value="{DynamicResource SurfaceActive}" />
+    </Style>
+
+    <Style Selector="Button.TitleBarButton">
+        <Setter Property="Width" Value="46" />
+        <Setter Property="Height" Value="40" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="CornerRadius" Value="0" />
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryForeground}" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding CornerRadius}">
+                    <ContentPresenter Content="{TemplateBinding Content}"
+                                      ContentTemplate="{TemplateBinding ContentTemplate}"
+                                      Padding="{TemplateBinding Padding}"
+                                      HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+
+    <Style Selector="Button.TitleBarButton:pointerover">
+        <Setter Property="Background" Value="{DynamicResource SurfaceHover}" />
+    </Style>
+
+    <Style Selector="Button.TitleBarButton:pressed">
+        <Setter Property="Background" Value="{DynamicResource SurfaceActive}" />
+    </Style>
+
+    <Style Selector="Button.SidebarToggleButton">
+        <Setter Property="Width" Value="46" />
+        <Setter Property="Height" Value="40" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="CornerRadius" Value="0" />
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryForeground}" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding CornerRadius}">
+                    <Path Classes="SidebarToggleIcon"
+                          Data="{DynamicResource IconSidebarToggle}" />
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+
+    <Style Selector="Button.SidebarToggleButton:pointerover">
+        <Setter Property="Background" Value="Transparent" />
+    </Style>
+
+    <Style Selector="Button.SidebarToggleButton:pressed">
+        <Setter Property="Background" Value="Transparent" />
+    </Style>
+
+    <Style Selector="Path.SidebarToggleIcon">
+        <Setter Property="Fill" Value="{DynamicResource SecondaryForeground}" />
+        <Setter Property="Width" Value="11" />
+        <Setter Property="Height" Value="11" />
+        <Setter Property="Stretch" Value="Uniform" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <Style Selector="Button.SidebarToggleButton:pointerover /template/ Path.SidebarToggleIcon">
+        <Setter Property="Fill" Value="{DynamicResource PrimaryHoverForeground}" />
+        <Setter Property="Width" Value="13" />
+        <Setter Property="Height" Value="13" />
+    </Style>
+
+    <Style Selector="Button.SidebarToggleButton:pressed /template/ Path.SidebarToggleIcon">
+        <Setter Property="Fill" Value="{DynamicResource AccentBlue}" />
+        <Setter Property="Width" Value="12" />
+        <Setter Property="Height" Value="12" />
+    </Style>
+
+    <Style Selector="Button.TitleBarCloseButton">
+        <Setter Property="Width" Value="46" />
+        <Setter Property="Height" Value="40" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="CornerRadius" Value="0" />
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryForeground}" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding CornerRadius}">
+                    <ContentPresenter Content="{TemplateBinding Content}"
+                                      ContentTemplate="{TemplateBinding ContentTemplate}"
+                                      Padding="{TemplateBinding Padding}"
+                                      HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+
+    <Style Selector="Button.TitleBarCloseButton:pointerover">
+        <Setter Property="Background" Value="{DynamicResource SurfaceHoverClose}" />
+    </Style>
+
+    <Style Selector="Button.TitleBarCloseButton:pressed">
+        <Setter Property="Background" Value="{DynamicResource SurfaceActiveClose}" />
+        
+    </Style>
+
+    <Style Selector="Path.WindowControlIcon">
+        <Setter Property="Width" Value="11" />
+        <Setter Property="Height" Value="11" />
+        <Setter Property="Stretch" Value="Uniform" />
+        <Setter Property="Fill" Value="{DynamicResource PrimaryForeground}" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <Style Selector="Button.TitleBarCloseButton:pointerover Path.WindowControlIcon">
+        <Setter Property="Fill" Value="White" />
+    </Style>
+
+    <Style Selector="Button.TitleBarCloseButton:pressed Path.WindowControlIcon">
+        <Setter Property="Fill" Value="White" />
+    </Style>
+</Styles>

@@ -12,8 +12,14 @@
     <Application.Styles>
         <FluentTheme  />
         <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml"/>
+        <StyleInclude Source="/Styles/Controls/Typography.axaml"/>
+        <StyleInclude Source="/Styles/Controls/Buttons.axaml"/>
+        <StyleInclude Source="/Styles/Controls/Popovers.axaml"/>
         <StyleInclude Source="/Styles/Controls/RadioButtons.axaml"/>
         <StyleInclude Source="/Styles/Controls/Images.axaml"/>
+        <Style Selector=":is(Control)">
+            <Setter Property="TextElement.FontFamily" Value="fonts:Inter#Inter"/>
+        </Style>
         <Style Selector="TextBox.invalid">
             <Setter Property="BorderBrush" Value="Red"/>
             <Setter Property="BorderThickness" Value="2"/>

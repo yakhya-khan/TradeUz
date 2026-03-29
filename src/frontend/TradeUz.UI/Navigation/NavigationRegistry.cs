@@ -9,6 +9,7 @@ namespace TradeUz.UI.Navigation;
 
 public static class NavigationRegistry
 {
+    // Реестр связывает строковые ключи меню с конкретными типами страниц.
     public static readonly Dictionary<string, Type> Pages = new()
     {
         { "Dashboard", typeof(DashboardViewModel) },

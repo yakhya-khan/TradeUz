@@ -21,12 +21,14 @@ public class ViewLocator : IDataTemplate
 
         if (!_viewCache.TryGetValue(viewModelType, out var viewType))
         {
+            // Используем соглашение по именованию: DashboardViewModel -> DashboardView.
             var viewName = viewModelType.Name.Replace("ViewModel", "View");
 
             viewType = _assembly
                 .GetTypes()
                 .FirstOrDefault(t => t.Name == viewName);
 
+            // Кэшируем результат, чтобы не сканировать assembly повторно.
             _viewCache[viewModelType] = viewType;
         }
 
@@ -37,5 +39,6 @@ public class ViewLocator : IDataTemplate
     }
 
     public bool Match(object? data)
+        // Этот template обслуживает только viewmodel, чтобы не перехватывать другие типы.
         => data != null && data.GetType().Name.EndsWith("ViewModel");
 }

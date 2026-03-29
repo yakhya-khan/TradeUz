@@ -1,16 +1,14 @@
-using System;
-using System.Net.Http;
-using Microsoft.Extensions.DependencyInjection;
 using TradeUz.UI.Core;
+using TradeUz.UI.Infrastructure.Localization;
 using TradeUz.UI.Infrastructure.Storage;
 using TradeUz.UI.Infrastructure.Theming;
 using TradeUz.UI.Navigation;
 using TradeUz.UI.Pages.Dashboard;
 using TradeUz.UI.Pages.Orders;
+using TradeUz.UI.Shell;
+using Microsoft.Extensions.DependencyInjection;
 using TradeUz.UI.Pages.Sales;
 using TradeUz.UI.Pages.Supply;
-using TradeUz.UI.Services;
-using TradeUz.UI.Shell;
 
 namespace TradeUz.UI.Bootstrap
 {
@@ -18,17 +16,14 @@ namespace TradeUz.UI.Bootstrap
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
-            var apiBaseUrl = Environment.GetEnvironmentVariable("TRADEUZ_API_BASE_URL") ?? "http://localhost:8080/";
-            if (!apiBaseUrl.EndsWith("/", StringComparison.Ordinal))
-            {
-                apiBaseUrl += "/";
-            }
-
+            // Router хранит текущую страницу внутри shell.
             services.AddSingleton<IRouter, Router>();
-            services.AddSingleton<INavigationService, NavigationService>();
-            services.AddSingleton(new HttpClient { BaseAddress = new Uri(apiBaseUrl, UriKind.Absolute) });
-            services.AddSingleton<ITradeOperationsService, ApiTradeOperationsService>();
 
+            // Навигация использует router и DI для переключения страниц.
+            services.AddSingleton<INavigationService, NavigationService>();
+
+            // Shell живёт весь срок работы приложения,
+            // остальные страницы создаются по мере открытия.
             services.AddSingleton<ShellViewModel>();
             services.AddTransient<DashboardViewModel>();
             services.AddTransient<SupplyViewModel>();
@@ -36,9 +31,15 @@ namespace TradeUz.UI.Bootstrap
             services.AddTransient<RetailSalesViewModel>();
             services.AddTransient<OrdersViewModel>();
 
+            // Главное окно одно на всё приложение.
             services.AddSingleton<ShellView>();
+
+            // Контекст пользователя оставлен как точка расширения для ролей и авторизации.
             services.AddSingleton<IUserContext, UserContext>();
+
+            // Общие инфраструктурные сервисы пользовательского интерфейса.
             services.AddSingleton<ILocalSettingsService, LocalSettingsService>();
+            services.AddSingleton<ILocalizationService, LocalizationService>();
             services.AddSingleton<IThemeService, ThemeService>();
 
             return services;

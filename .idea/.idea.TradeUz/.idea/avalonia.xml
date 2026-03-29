@@ -3,9 +3,16 @@
   <component name="AvaloniaProject">
     <option name="projectPerEditor">
       <map>
+        <entry key="src/frontend/TradeUz.UI/Pages/Orders/OrdersView.axaml" value="src/frontend/TradeUz.UI/TradeUz.UI.csproj" />
         <entry key="src/frontend/TradeUz.UI/Pages/Sales/RetailSalesView.axaml" value="src/frontend/TradeUz.UI/TradeUz.UI.csproj" />
         <entry key="src/frontend/TradeUz.UI/Shell/ShellView.axaml" value="src/frontend/TradeUz.UI/TradeUz.UI.csproj" />
+        <entry key="src/frontend/TradeUz.UI/Styles/Controls/Buttons.axaml" value="src/frontend/TradeUz.UI/TradeUz.UI.csproj" />
+        <entry key="src/frontend/TradeUz.UI/Styles/Controls/Images.axaml" value="src/frontend/TradeUz.UI/TradeUz.UI.csproj" />
+        <entry key="src/frontend/TradeUz.UI/Styles/Controls/Popovers.axaml" value="src/frontend/TradeUz.UI/TradeUz.UI.csproj" />
         <entry key="src/frontend/TradeUz.UI/Styles/Controls/RadioButtons.axaml" value="src/frontend/TradeUz.UI/TradeUz.UI.csproj" />
+        <entry key="src/frontend/TradeUz.UI/Styles/Resources/Icons.axaml" value="src/frontend/TradeUz.UI/TradeUz.UI.csproj" />
+        <entry key="src/frontend/TradeUz.UI/Styles/Thems/Colors.Dark.axaml" value="src/frontend/TradeUz.UI/TradeUz.UI.csproj" />
+        <entry key="src/frontend/TradeUz.UI/Styles/Thems/Colors.Light.axaml" value="src/frontend/TradeUz.UI/TradeUz.UI.csproj" />
       </map>
     </option>
   </component>

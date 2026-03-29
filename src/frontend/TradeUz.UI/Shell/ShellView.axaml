@@ -1,85 +1,252 @@
-﻿<Window xmlns="https://github.com/avaloniaui"
+<Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="https://github.com/avaloniaui/design"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:primitives="clr-namespace:Avalonia.Controls.Primitives;assembly=Avalonia.Controls"
         xmlns:vm="clr-namespace:TradeUz.UI.Shell"
-        Width="1240" Height="700"
+        Width="1240"
+        Height="700"
         x:Class="TradeUz.UI.Shell.ShellView"
         x:DataType="vm:ShellViewModel"
         WindowStartupLocation="CenterScreen"
+        SystemDecorations="BorderOnly"
+        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaChromeHints="NoChrome"
+        ExtendClientAreaTitleBarHeightHint="40"
         Title="TradeUz.UI">
-        <Design.DataContext>
-            <vm:ShellViewModel />
-        </Design.DataContext>
-    <Grid Background="{DynamicResource ResourceKey=PrimaryBackground}" ColumnDefinitions="Auto, *" >
-        <Border Grid.Column="0" Padding="0" Background="{DynamicResource ResourceKey=PrimaryGradientBackground}" >
-            <Grid RowDefinitions="*, Auto">
-                <StackPanel Grid.Row="0" Spacing="2" >
-                    <Image PointerPressed="Image_PointerPressed" 
-                        Source="{SvgImage /Assets/Images/logo_Vendora.svg}" Width="220" 
-                            IsVisible="{Binding SideMenuExpanded}" Margin="8" />
-                    <Image PointerPressed="Image_PointerPressed" HorizontalAlignment="Left"
-                        Source="{SvgImage /Assets/Images/icon_Vendora.svg}" Width="50" 
-                            IsVisible="{Binding !SideMenuExpanded}" Margin="4" />
-                    <RadioButton Classes="ModernRadio" GroupName="SidebarMenu" 
-                                 Tag="{DynamicResource AccentHome}"
-                                 Command="{Binding NavigateCommand}"
-                                 CommandParameter="Dashboard">
-				        <StackPanel Orientation="Horizontal" Spacing="15">
-					        <Image Classes="Icon" Source="{DynamicResource IconHome}" Margin="10,0"/>
-                            <TextBlock Text="Главная" IsVisible="{Binding SideMenuExpanded}" VerticalAlignment="Center"/>
-                        </StackPanel>
-                     </RadioButton>
-                    <RadioButton Classes="ModernRadio" GroupName="SidebarMenu" 
-                                 Tag="{DynamicResource AccentSupply}"
-                                 Command="{Binding NavigateCommand}"
-                                 CommandParameter="Supply">
-				        <StackPanel Orientation="Horizontal" Spacing="15">
-					        <Image Classes="Icon" Source="{DynamicResource IconSupply}" Margin="10,0"/>
-                            <TextBlock Text="Доставка" IsVisible="{Binding SideMenuExpanded}" VerticalAlignment="Center"/>
-                        </StackPanel>
-                     </RadioButton>
-                    <RadioButton Classes="ModernRadio" GroupName="SidebarMenu" 
-                                 Tag="{DynamicResource AccentTrade}"
-                                 Command="{Binding NavigateCommand}"
-                                 CommandParameter="Retail Sales">
-				        <StackPanel Orientation="Horizontal" Spacing="15">
-					        <Image Classes="Icon" Source="{DynamicResource IconTrade}" Margin="10,0"/>
-                            <TextBlock Text="Chakana Savdo" IsVisible="{Binding SideMenuExpanded}" VerticalAlignment="Center"/>
-                        </StackPanel>
-                     </RadioButton>
-                    <RadioButton Classes="ModernRadio" GroupName="SidebarMenu" 
-                                 Tag="{DynamicResource AccentTrade}"
-                                 Command="{Binding NavigateCommand}"
-                                 CommandParameter="Sales">
-				        <StackPanel Orientation="Horizontal" Spacing="15">
-					        <Image Classes="Icon" Source="{DynamicResource IconTrade}" Margin="10,0"/>
-                            <TextBlock Text="Savdo bo'limi" IsVisible="{Binding SideMenuExpanded}" VerticalAlignment="Center"/>
-                        </StackPanel>
-                     </RadioButton>
-                    <RadioButton Classes="ModernRadio" GroupName="SidebarMenu" 
-                                 Tag="{DynamicResource AccentOrders}"
-                                 Command="{Binding NavigateCommand}"
-                                 CommandParameter="Orders">
-				        <StackPanel Orientation="Horizontal" Spacing="15">
-					        <Image Classes="Icon" Source="{DynamicResource IconOrders}" Margin="10,0"/>
-                            <TextBlock Text="Заказы" IsVisible="{Binding SideMenuExpanded}" VerticalAlignment="Center"/>
-                        </StackPanel>
-                     </RadioButton>
+    <Design.DataContext>
+        <vm:ShellViewModel />
+    </Design.DataContext>
 
+    <Grid Background="{DynamicResource PrimaryBackground}"
+          RowDefinitions="40,*"
+          ColumnDefinitions="Auto,*">
+        <Border Grid.Row="0"
+                Grid.Column="0"
+                Width="{Binding SidebarWidth}"
+                Background="{DynamicResource PrimaryGradientBackground}"
+                BorderBrush="{DynamicResource BorderDefault}"
+                BorderThickness="0,0,0,0">
+            <Border Background="Transparent"
+                    Padding="12,0,12,0"
+                    PointerPressed="TitleBar_PointerPressed">
+                <StackPanel Orientation="Horizontal"
+                            Spacing="8"
+                            VerticalAlignment="Center"
+                            IsHitTestVisible="False">
+                    <TextBlock Text="TU"
+                               FontWeight="Bold" />
+                    <TextBlock Text="TradeUz"
+                               FontWeight="SemiBold"
+                               IsVisible="{Binding SideMenuExpanded}" />
                 </StackPanel>
-                <StackPanel Grid.Row="1" Spacing="2" Margin="0,20,0,20" Orientation="Vertical">
-                    <Button Content="Theme"
-                        Command="{Binding ToggleThemeCommand}" />
+            </Border>
+        </Border>
+
+        <Border Grid.Row="0"
+                Grid.Column="1"
+                Background="{DynamicResource SurfaceDefault}"
+                BorderBrush="{DynamicResource BorderDefault}"
+                BorderThickness="0,0,0,1">
+            <Grid ColumnDefinitions="Auto,*,Auto">
+                <Button Classes="SidebarToggleButton"
+                        Command="{Binding SideMenuResizeCommand}" />
+
+                <Border Grid.Column="1"
+                        Background="Transparent"
+                        Padding="12,0,12,0"
+                        PointerPressed="TitleBar_PointerPressed">
+                    <TextBlock Classes="SectionTitle"
+                               Text="{Binding CurrentSectionTitle}"
+                               IsVisible="{Binding !SideMenuExpanded}"
+                               VerticalAlignment="Center"
+                               IsHitTestVisible="False" />
+                </Border>
+
+                <StackPanel Grid.Column="2"
+                            Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal"
+                                Spacing="8"
+                                Margin="0,0,12,0"
+                                VerticalAlignment="Center">
+                        <Button Classes="UtilityButton"
+                                Command="{Binding ToggleThemeCommand}"
+                                ToolTip.Tip="{Binding ThemeToggleTooltip}">
+                            <Grid>
+                                <Path Classes="ThemeIcon"
+                                      Data="{DynamicResource IconThemeSun}"
+                                      IsVisible="{Binding IsDarkTheme}" />
+                                <Path Classes="ThemeIcon"
+                                      Data="{DynamicResource IconThemeMoon}"
+                                      IsVisible="{Binding !IsDarkTheme}" />
+                            </Grid>
+                        </Button>
+
+                        <Grid>
+                            <Button x:Name="LanguageButton"
+                                    Classes="UtilityButton"
+                                    Command="{Binding ToggleLanguageMenuCommand}"
+                                    ToolTip.Tip="{Binding LanguageToggleTooltip}"
+                                    HorizontalContentAlignment="Center"
+                                    VerticalContentAlignment="Center"
+                                    Content="{Binding CurrentLanguageCode}" />
+
+                            <primitives:Popup IsOpen="{Binding IsLanguageMenuOpen, Mode=TwoWay}"
+                                              PlacementTarget="{Binding #LanguageButton}"
+                                              Placement="BottomEdgeAlignedRight"
+                                              VerticalOffset="8"
+                                              IsLightDismissEnabled="True">
+                                <Border Classes="PopoverHost">
+                                    <Grid ClipToBounds="False">
+                                        <Border Classes="PopoverAnchor"
+                                                HorizontalAlignment="Right"
+                                                VerticalAlignment="Top"
+                                                Margin="0,2,10,0"
+                                                RenderTransformOrigin="50%,50%">
+                                            <Border.RenderTransform>
+                                                <RotateTransform Angle="45" />
+                                            </Border.RenderTransform>
+                                        </Border>
+                                        <Border Classes="PopoverSurface"
+                                                Margin="0,6,0,0">
+                                            <Border Classes="SegmentedGroup">
+                                                <StackPanel Orientation="Vertical" Spacing="6">
+                                                    <RadioButton Classes="SegmentOption"
+                                                                 GroupName="LanguageMenu"
+                                                                 Content="UZ"
+                                                                 IsChecked="{Binding IsUzbekSelected}"
+                                                                 Command="{Binding SetLanguageCommand}"
+                                                                 CommandParameter="UzbekLatin" />
+                                                    <RadioButton Classes="SegmentOption"
+                                                                 GroupName="LanguageMenu"
+                                                                 Content="RU"
+                                                                 IsChecked="{Binding IsRussianSelected}"
+                                                                 Command="{Binding SetLanguageCommand}"
+                                                                 CommandParameter="Russian" />
+                                                    <RadioButton Classes="SegmentOption"
+                                                                 GroupName="LanguageMenu"
+                                                                 Content="EN"
+                                                                 IsChecked="{Binding IsEnglishSelected}"
+                                                                 Command="{Binding SetLanguageCommand}"
+                                                                 CommandParameter="English" />
+                                                </StackPanel>
+                                            </Border>
+                                        </Border>
+                                    </Grid>
+                                </Border>
+                            </primitives:Popup>
+                        </Grid>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal"
+                                Spacing="0">
+                        <Button Classes="TitleBarButton"
+                                Click="MinimizeWindow_Click">
+                            <Path Classes="WindowControlIcon" Data="{DynamicResource IconWindowMinimize}" />
+                        </Button>
+
+                        <Button Classes="TitleBarButton"
+                                Click="ToggleMaximizeWindow_Click">
+                            <Grid>
+                                <Path x:Name="MaximizeIcon"
+                                      Classes="WindowControlIcon"
+                                      Data="{DynamicResource IconWindowMaximize}" />
+                                <Path x:Name="RestoreIcon"
+                                      Classes="WindowControlIcon"
+                                      Data="{DynamicResource IconWindowRestore}"
+                                      IsVisible="False" />
+                            </Grid>
+                        </Button>
+
+                        <Button Classes="TitleBarCloseButton"
+                                Click="CloseWindow_Click">
+                            <Path Classes="WindowControlIcon"
+                                  Data="{DynamicResource IconWindowClose}" />
+                        </Button>
+                    </StackPanel>
                 </StackPanel>
             </Grid>
-            
         </Border>
-        <!-- Content Area -->
-        <ContentControl Grid.Column="1"
+
+        <Border Grid.Row="1"
+                Grid.Column="0"
+                Width="{Binding SidebarWidth}"
+                Background="{DynamicResource PrimaryGradientBackground}">
+            <StackPanel Spacing="2" Margin="0,8,0,0">
+                <RadioButton Classes="ModernRadio"
+                             GroupName="SidebarMenu"
+                             Tag="{DynamicResource AccentHome}"
+                             Command="{Binding NavigateCommand}"
+                             CommandParameter="Dashboard">
+                    <StackPanel Orientation="Horizontal" Spacing="15">
+                        <Path Classes="SidebarIcon" Data="{DynamicResource IconHome}" Margin="10,0" />
+                        <TextBlock Classes="SidebarLabel"
+                                   Text="{Binding HomeText}"
+                                   IsVisible="{Binding SideMenuExpanded}"
+                                   VerticalAlignment="Center" />
+                    </StackPanel>
+                </RadioButton>
+
+                <RadioButton Classes="ModernRadio"
+                             GroupName="SidebarMenu"
+                             Tag="{DynamicResource AccentSupply}"
+                             Command="{Binding NavigateCommand}"
+                             CommandParameter="Supply">
+                    <StackPanel Orientation="Horizontal" Spacing="15">
+                        <Path Classes="SidebarIcon" Data="{DynamicResource IconSupply}" Margin="10,0" />
+                        <TextBlock Classes="SidebarLabel"
+                                   Text="{Binding SupplyText}"
+                                   IsVisible="{Binding SideMenuExpanded}"
+                                   VerticalAlignment="Center" />
+                    </StackPanel>
+                </RadioButton>
+
+                <RadioButton Classes="ModernRadio"
+                             GroupName="SidebarMenu"
+                             Tag="{DynamicResource AccentTrade}"
+                             Command="{Binding NavigateCommand}"
+                             CommandParameter="Retail Sales">
+                    <StackPanel Orientation="Horizontal" Spacing="15">
+                        <Path Classes="SidebarIcon" Data="{DynamicResource IconTrade}" Margin="10,0" />
+                        <TextBlock Classes="SidebarLabel"
+                                   Text="{Binding RetailSalesText}"
+                                   IsVisible="{Binding SideMenuExpanded}"
+                                   VerticalAlignment="Center" />
+                    </StackPanel>
+                </RadioButton>
+
+                <RadioButton Classes="ModernRadio"
+                             GroupName="SidebarMenu"
+                             Tag="{DynamicResource AccentTrade}"
+                             Command="{Binding NavigateCommand}"
+                             CommandParameter="Sales">
+                    <StackPanel Orientation="Horizontal" Spacing="15">
+                        <Path Classes="SidebarIcon" Data="{DynamicResource IconTrade}" Margin="10,0" />
+                        <TextBlock Classes="SidebarLabel"
+                                   Text="{Binding SalesText}"
+                                   IsVisible="{Binding SideMenuExpanded}"
+                                   VerticalAlignment="Center" />
+                    </StackPanel>
+                </RadioButton>
+
+                <RadioButton Classes="ModernRadio"
+                             GroupName="SidebarMenu"
+                             Tag="{DynamicResource AccentOrders}"
+                             Command="{Binding NavigateCommand}"
+                             CommandParameter="Orders">
+                    <StackPanel Orientation="Horizontal" Spacing="15">
+                        <Path Classes="SidebarIcon" Data="{DynamicResource IconOrders}" Margin="10,0" />
+                        <TextBlock Classes="SidebarLabel"
+                                   Text="{Binding OrdersText}"
+                                   IsVisible="{Binding SideMenuExpanded}"
+                                   VerticalAlignment="Center" />
+                    </StackPanel>
+                </RadioButton>
+            </StackPanel>
+        </Border>
+
+        <ContentControl Grid.Row="1"
+                        Grid.Column="1"
                         Content="{Binding Router.Current}" />
-
     </Grid>
-
 </Window>
-

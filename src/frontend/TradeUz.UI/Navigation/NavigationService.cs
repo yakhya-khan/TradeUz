@@ -9,6 +9,8 @@ public class NavigationService : INavigationService
     private readonly IServiceProvider _provider;
     private readonly IRouter _router;
 
+    // Кэшируем уже созданные viewmodel страниц, чтобы не терять состояние
+    // при навигации между разделами.
     private readonly Dictionary<Type, object> _cache = new();
 
     public NavigationService(IServiceProvider provider, IRouter router)
