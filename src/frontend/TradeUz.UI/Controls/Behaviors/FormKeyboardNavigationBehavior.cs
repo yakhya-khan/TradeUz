@@ -57,8 +57,10 @@ public class FormKeyboardNavigationBehavior : Behavior<Control>
             return;
 
         var targetIndex = sourceIndex + step;
-        if (targetIndex < 0 || targetIndex >= candidates.Count)
-            return;
+        if (targetIndex < 0)
+            targetIndex = candidates.Count - 1;
+        else if (targetIndex >= candidates.Count)
+            targetIndex = 0;
 
         if (FocusTarget(candidates[targetIndex], e.KeyModifiers))
             e.Handled = true;

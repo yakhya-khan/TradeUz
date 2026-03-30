@@ -55,7 +55,7 @@
                     <behaviors:DateMaskBehavior/>
                 </i:Interaction.Behaviors>
             </CalendarDatePicker>
-            <TextBox VerticalAlignment="Center" Width="120" TabIndex="5"/>
+            <TextBox VerticalAlignment="Center" Width="120" TabIndex="5" IsTabStop="True"/>
         </StackPanel>
         
         <TextBlock Grid.Row="2" Classes="PageTitle" Text="{Binding Title}"
