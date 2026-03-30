@@ -15,19 +15,50 @@
     <Design.DataContext>
         <vm:OrdersViewModel />
     </Design.DataContext>
-    <Grid RowDefinitions="50,*" >
+    <Grid RowDefinitions="50,50,*" ColumnDefinitions="*,*,*" >
+        <i:Interaction.Behaviors>
+            <behaviors:FormKeyboardNavigationBehavior />
+        </i:Interaction.Behaviors>
         <controls:NumericBox
             Classes="AmountInput"
             Value="{Binding CurrentPrice}"
             DecimalPlaces="6"
             UseGrouping="True"
             PadFractionZerosOnBlur="False"
+            TabIndex="1"
             Width="200"
             Height="36">
-            
         </controls:NumericBox>
+        <TextBox Grid.Column="1"
+                 TabIndex="2"
+                 Width="200" Height="32"/>
+        <ComboBox Grid.Column="2"
+                  TabIndex="3"
+                  VerticalAlignment="Center"
+                  Width="200"
+                  Focusable="True"
+                  IsEditable="True">
+            <ComboBox.Items>
+                <x:String>Apple</x:String>
+                <x:String>Banana</x:String>
+                <x:String>Orange</x:String>
+            </ComboBox.Items>
+        </ComboBox>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="10">
+            <TextBlock Classes="PageTitle"
+                       Text="{Binding Title}"
+                       Foreground="{DynamicResource PrimaryForeground}"
+                       VerticalAlignment="Center"/>
+            <CalendarDatePicker Width="128" Height="30"
+                                TabIndex="4">
+                <i:Interaction.Behaviors>
+                    <behaviors:DateMaskBehavior/>
+                </i:Interaction.Behaviors>
+            </CalendarDatePicker>
+            <TextBox VerticalAlignment="Center" Width="120" TabIndex="5"/>
+        </StackPanel>
         
-        <TextBlock Grid.Row="1" Classes="PageTitle" Text="{Binding Title}"
+        <TextBlock Grid.Row="2" Classes="PageTitle" Text="{Binding Title}"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"/>
     </Grid>

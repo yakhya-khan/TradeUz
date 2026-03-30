@@ -4,15 +4,15 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>Assets\Icons\Ico-mark.ico</ApplicationIcon>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
   </PropertyGroup>
   <ItemGroup>
-    <AvaloniaResource Include="Assets\Images\LogoVendora.svg" />
-    <AvaloniaResource Include="Assets\Images\LogoVendoraTr.svg" />
+    <AvaloniaResource Include="Assets\Icons\Ico-mark.ico" />
+    <AvaloniaResource Include="Assets\Images\logo-mark.svg" />
+    <AvaloniaResource Include="Assets\Images\logo-wordmark.svg" />
     <AvaloniaResource Include="Styles\Thems\Colors.Dark.axaml" />
     <AvaloniaResource Include="Styles\Thems\Colors.Light.axaml" />
-    <AvaloniaResource Include="Assets\Images\icon_Vendora.svg" />
-    <AvaloniaResource Include="Assets\Images\logo_Vendora.svg" />
   </ItemGroup>
 
   <ItemGroup>

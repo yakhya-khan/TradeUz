@@ -41,6 +41,11 @@ namespace TradeUz.UI.Shell
         public string CurrentLanguageCode => L.CurrentLanguageCode;
         public string CurrentSectionTitle => GetSectionTitle(_currentSectionKey);
         public double SidebarWidth => SideMenuExpanded ? ExpandedSidebarWidth : CollapsedSidebarWidth;
+        public string? HomeTooltip => GetSidebarTooltip("Dashboard", HomeText);
+        public string? SupplyTooltip => GetSidebarTooltip("Supply", SupplyText);
+        public string? RetailSalesTooltip => GetSidebarTooltip("Retail Sales", RetailSalesText);
+        public string? SalesTooltip => GetSidebarTooltip("Sales", SalesText);
+        public string? OrdersTooltip => GetSidebarTooltip("Orders", OrdersText);
         public bool IsUzbekSelected => L.CurrentLanguage == AppLanguage.UzbekLatin;
         public bool IsRussianSelected => L.CurrentLanguage == AppLanguage.Russian;
         public bool IsEnglishSelected => L.CurrentLanguage == AppLanguage.English;
@@ -111,6 +116,11 @@ namespace TradeUz.UI.Shell
             OnPropertyChanged(nameof(OrdersText));
             OnPropertyChanged(nameof(CurrentLanguageCode));
             OnPropertyChanged(nameof(CurrentSectionTitle));
+            OnPropertyChanged(nameof(HomeTooltip));
+            OnPropertyChanged(nameof(SupplyTooltip));
+            OnPropertyChanged(nameof(RetailSalesTooltip));
+            OnPropertyChanged(nameof(SalesTooltip));
+            OnPropertyChanged(nameof(OrdersTooltip));
             OnPropertyChanged(nameof(IsUzbekSelected));
             OnPropertyChanged(nameof(IsRussianSelected));
             OnPropertyChanged(nameof(IsEnglishSelected));
@@ -127,6 +137,11 @@ namespace TradeUz.UI.Shell
             {
                 _currentSectionKey = page;
                 OnPropertyChanged(nameof(CurrentSectionTitle));
+                OnPropertyChanged(nameof(HomeTooltip));
+                OnPropertyChanged(nameof(SupplyTooltip));
+                OnPropertyChanged(nameof(RetailSalesTooltip));
+                OnPropertyChanged(nameof(SalesTooltip));
+                OnPropertyChanged(nameof(OrdersTooltip));
 
                 var method = typeof(INavigationService)
                     .GetMethod(nameof(INavigationService.NavigateTo))!
@@ -163,7 +178,17 @@ namespace TradeUz.UI.Shell
             // Ширина левой панели фиксируется в двух состояниях:
             // в развернутом и свернутом виде она больше не зависит от содержимого.
             OnPropertyChanged(nameof(SidebarWidth));
+            OnPropertyChanged(nameof(HomeTooltip));
+            OnPropertyChanged(nameof(SupplyTooltip));
+            OnPropertyChanged(nameof(RetailSalesTooltip));
+            OnPropertyChanged(nameof(SalesTooltip));
+            OnPropertyChanged(nameof(OrdersTooltip));
         }
+
+        private string? GetSidebarTooltip(string pageKey, string text) =>
+            !SideMenuExpanded && !string.Equals(_currentSectionKey, pageKey, StringComparison.Ordinal)
+                ? text
+                : null;
 
         private string GetSectionTitle(string pageKey) =>
             pageKey switch

@@ -21,6 +21,11 @@
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="Fill" Value="{DynamicResource PrimaryForeground}"/>
+        <Setter Property="Transitions">
+            <Transitions>
+                <BrushTransition Property="Fill" Duration="0:0:0.25"/>
+            </Transitions>
+        </Setter>
     </Style>
 
     <Style Selector="Path.ThemeIcon">

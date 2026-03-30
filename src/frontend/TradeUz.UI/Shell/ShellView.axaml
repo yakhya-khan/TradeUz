@@ -3,12 +3,13 @@
         xmlns:d="https://github.com/avaloniaui/design"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:primitives="clr-namespace:Avalonia.Controls.Primitives;assembly=Avalonia.Controls"
+        xmlns:svg="clr-namespace:Avalonia.Svg.Skia;assembly=Svg.Controls.Skia.Avalonia"
         xmlns:vm="clr-namespace:TradeUz.UI.Shell"
-        Width="1240"
-        Height="700"
+        Width="1240" Height="700"
         x:Class="TradeUz.UI.Shell.ShellView"
         x:DataType="vm:ShellViewModel"
         WindowStartupLocation="CenterScreen"
+        Icon="avares://TradeUz.UI/Assets/Icons/Ico-mark.ico"
         SystemDecorations="BorderOnly"
         ExtendClientAreaToDecorationsHint="True"
         ExtendClientAreaChromeHints="NoChrome"
@@ -27,18 +28,29 @@
                 Background="{DynamicResource PrimaryGradientBackground}"
                 BorderBrush="{DynamicResource BorderDefault}"
                 BorderThickness="0,0,0,0">
+            <Border.Transitions>
+                <Transitions>
+                    <DoubleTransition Property="Width" Duration="0:0:0.18" />
+                </Transitions>
+            </Border.Transitions>
             <Border Background="Transparent"
                     Padding="12,0,12,0"
                     PointerPressed="TitleBar_PointerPressed">
                 <StackPanel Orientation="Horizontal"
-                            Spacing="8"
+                            Spacing="10"
                             VerticalAlignment="Center"
                             IsHitTestVisible="False">
-                    <TextBlock Text="TU"
-                               FontWeight="Bold" />
-                    <TextBlock Text="TradeUz"
-                               FontWeight="SemiBold"
-                               IsVisible="{Binding SideMenuExpanded}" />
+                    <svg:Svg Path="avares://TradeUz.UI/Assets/Images/logo-mark.svg"
+                             Height="36"
+                             Width="36"
+                             Stretch="Uniform"
+                             VerticalAlignment="Center" />
+                    <svg:Svg Path="avares://TradeUz.UI/Assets/Images/logo-wordmark.svg"
+                             Height="30"
+                             Stretch="Uniform"
+                             VerticalAlignment="Center"
+                             Margin="14,0,0,0"
+                             IsVisible="{Binding SideMenuExpanded}" />
                 </StackPanel>
             </Border>
         </Border>
@@ -172,14 +184,23 @@
                 Grid.Column="0"
                 Width="{Binding SidebarWidth}"
                 Background="{DynamicResource PrimaryGradientBackground}">
+            <Border.Transitions>
+                <Transitions>
+                    <DoubleTransition Property="Width" Duration="0:0:0.18" />
+                </Transitions>
+            </Border.Transitions>
             <StackPanel Spacing="2" Margin="0,8,0,0">
                 <RadioButton Classes="ModernRadio"
                              GroupName="SidebarMenu"
                              Tag="{DynamicResource AccentHome}"
+                             ToolTip.Tip="{Binding HomeTooltip}"
                              Command="{Binding NavigateCommand}"
                              CommandParameter="Dashboard">
                     <StackPanel Orientation="Horizontal" Spacing="15">
-                        <Path Classes="SidebarIcon" Data="{DynamicResource IconHome}" Margin="10,0" />
+                        <Path Classes="SidebarIcon"
+                              Data="{DynamicResource IconHome}"
+                              Fill="{Binding $parent[RadioButton].Foreground}"
+                              Margin="10,0" />
                         <TextBlock Classes="SidebarLabel"
                                    Text="{Binding HomeText}"
                                    IsVisible="{Binding SideMenuExpanded}"
@@ -190,10 +211,14 @@
                 <RadioButton Classes="ModernRadio"
                              GroupName="SidebarMenu"
                              Tag="{DynamicResource AccentSupply}"
+                             ToolTip.Tip="{Binding SupplyTooltip}"
                              Command="{Binding NavigateCommand}"
                              CommandParameter="Supply">
                     <StackPanel Orientation="Horizontal" Spacing="15">
-                        <Path Classes="SidebarIcon" Data="{DynamicResource IconSupply}" Margin="10,0" />
+                        <Path Classes="SidebarIcon"
+                              Data="{DynamicResource IconSupply}"
+                              Fill="{Binding $parent[RadioButton].Foreground}"
+                              Margin="10,0" />
                         <TextBlock Classes="SidebarLabel"
                                    Text="{Binding SupplyText}"
                                    IsVisible="{Binding SideMenuExpanded}"
@@ -204,10 +229,14 @@
                 <RadioButton Classes="ModernRadio"
                              GroupName="SidebarMenu"
                              Tag="{DynamicResource AccentTrade}"
+                             ToolTip.Tip="{Binding RetailSalesTooltip}"
                              Command="{Binding NavigateCommand}"
                              CommandParameter="Retail Sales">
                     <StackPanel Orientation="Horizontal" Spacing="15">
-                        <Path Classes="SidebarIcon" Data="{DynamicResource IconTrade}" Margin="10,0" />
+                        <Path Classes="SidebarIcon"
+                              Data="{DynamicResource IconTrade}"
+                              Fill="{Binding $parent[RadioButton].Foreground}"
+                              Margin="10,0" />
                         <TextBlock Classes="SidebarLabel"
                                    Text="{Binding RetailSalesText}"
                                    IsVisible="{Binding SideMenuExpanded}"
@@ -218,10 +247,14 @@
                 <RadioButton Classes="ModernRadio"
                              GroupName="SidebarMenu"
                              Tag="{DynamicResource AccentTrade}"
+                             ToolTip.Tip="{Binding SalesTooltip}"
                              Command="{Binding NavigateCommand}"
                              CommandParameter="Sales">
                     <StackPanel Orientation="Horizontal" Spacing="15">
-                        <Path Classes="SidebarIcon" Data="{DynamicResource IconTrade}" Margin="10,0" />
+                        <Path Classes="SidebarIcon"
+                              Data="{DynamicResource IconTrade}"
+                              Fill="{Binding $parent[RadioButton].Foreground}"
+                              Margin="10,0" />
                         <TextBlock Classes="SidebarLabel"
                                    Text="{Binding SalesText}"
                                    IsVisible="{Binding SideMenuExpanded}"
@@ -232,10 +265,14 @@
                 <RadioButton Classes="ModernRadio"
                              GroupName="SidebarMenu"
                              Tag="{DynamicResource AccentOrders}"
+                             ToolTip.Tip="{Binding OrdersTooltip}"
                              Command="{Binding NavigateCommand}"
                              CommandParameter="Orders">
                     <StackPanel Orientation="Horizontal" Spacing="15">
-                        <Path Classes="SidebarIcon" Data="{DynamicResource IconOrders}" Margin="10,0" />
+                        <Path Classes="SidebarIcon"
+                              Data="{DynamicResource IconOrders}"
+                              Fill="{Binding $parent[RadioButton].Foreground}"
+                              Margin="10,0" />
                         <TextBlock Classes="SidebarLabel"
                                    Text="{Binding OrdersText}"
                                    IsVisible="{Binding SideMenuExpanded}"

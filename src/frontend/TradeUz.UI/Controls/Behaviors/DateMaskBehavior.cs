@@ -90,7 +90,8 @@ public class DateMaskBehavior : Behavior<CalendarDatePicker>
         if (_updating || _textBox == null)
             return;
 
-        if (e.Key is Key.Tab)
+        // Эти клавиши используются для перехода по форме, а не для редактирования даты.
+        if (e.Key is Key.Tab or Key.Enter or Key.Return or Key.Up or Key.Down)
             return;
 
         var text = _textBox.Text ?? "";
@@ -173,64 +174,74 @@ public class DateMaskBehavior : Behavior<CalendarDatePicker>
     // ✅ Валидация
     private void OnLostFocus(object? sender, RoutedEventArgs e)
     {
-        if (_textBox == null || string.IsNullOrWhiteSpace(_textBox.Text))
+        if (_textBox == null)
             return;
 
-        var digits = new string(_textBox.Text.Where(char.IsDigit).ToArray());
-
-        if (digits.Length < 6)
+        try
         {
-            SetInvalid(LocalizationProvider.Get("ValidationDateIncomplete"));
-            return;
+            if (string.IsNullOrWhiteSpace(_textBox.Text))
+                return;
+
+            var digits = new string(_textBox.Text.Where(char.IsDigit).ToArray());
+
+            if (digits.Length < 6)
+            {
+                SetInvalid(LocalizationProvider.Get("ValidationDateIncomplete"));
+                return;
+            }
+
+            var day = int.Parse(digits.Substring(0, 2));
+            var month = int.Parse(digits.Substring(2, 2));
+            var yearPart = digits.Substring(4);
+
+            if (yearPart.Length == 2)
+            {
+                var shortYear = int.Parse(yearPart);
+                yearPart = shortYear <= 50 ? $"20{yearPart}" : $"19{yearPart}";
+            }
+
+            var year = int.Parse(yearPart);
+
+            if (month < 1 || month > 12)
+            {
+                SetInvalid(LocalizationProvider.Get("ValidationDateInvalidMonth"));
+                return;
+            }
+
+            if (day < 1 || day > DateTime.DaysInMonth(year, month))
+            {
+                SetInvalid(LocalizationProvider.Get("ValidationDateInvalidDay"));
+                return;
+            }
+
+            var parsed = new DateTime(year, month, day);
+
+            var associatedObject = AssociatedObject;
+            if (associatedObject == null)
+                return;
+
+            if (associatedObject.DisplayDateStart.HasValue &&
+                parsed < associatedObject.DisplayDateStart.Value)
+            {
+                SetInvalid(LocalizationProvider.Get("ValidationDateBeforeMin"));
+                return;
+            }
+
+            if (associatedObject.DisplayDateEnd.HasValue &&
+                parsed > associatedObject.DisplayDateEnd.Value)
+            {
+                SetInvalid(LocalizationProvider.Get("ValidationDateAfterMax"));
+                return;
+            }
+
+            ClearInvalid();
+            associatedObject.SelectedDate = parsed;
+            _textBox.Text = parsed.ToString("dd.MM.yyyy");
         }
-
-        var day = int.Parse(digits.Substring(0, 2));
-        var month = int.Parse(digits.Substring(2, 2));
-        var yearPart = digits.Substring(4);
-
-        if (yearPart.Length == 2)
+        finally
         {
-            var shortYear = int.Parse(yearPart);
-            yearPart = shortYear <= 50 ? $"20{yearPart}" : $"19{yearPart}";
+            ResetCaretState();
         }
-
-        var year = int.Parse(yearPart);
-
-        if (month < 1 || month > 12)
-        {
-            SetInvalid(LocalizationProvider.Get("ValidationDateInvalidMonth"));
-            return;
-        }
-
-        if (day < 1 || day > DateTime.DaysInMonth(year, month))
-        {
-            SetInvalid(LocalizationProvider.Get("ValidationDateInvalidDay"));
-            return;
-        }
-
-        var parsed = new DateTime(year, month, day);
-
-        var associatedObject = AssociatedObject;
-        if (associatedObject == null)
-            return;
-
-        if (associatedObject.DisplayDateStart.HasValue &&
-            parsed < associatedObject.DisplayDateStart.Value)
-        {
-            SetInvalid(LocalizationProvider.Get("ValidationDateBeforeMin"));
-            return;
-        }
-
-        if (associatedObject.DisplayDateEnd.HasValue &&
-            parsed > associatedObject.DisplayDateEnd.Value)
-        {
-            SetInvalid(LocalizationProvider.Get("ValidationDateAfterMax"));
-            return;
-        }
-
-        ClearInvalid();
-        associatedObject.SelectedDate = parsed;
-        _textBox.Text = parsed.ToString("dd.MM.yyyy");
     }
 
     private void SetInvalid(string message)
@@ -249,5 +260,15 @@ public class DateMaskBehavior : Behavior<CalendarDatePicker>
 
         _textBox.Classes.Remove("invalid");
         ToolTip.SetTip(_textBox, null);
+    }
+
+    private void ResetCaretState()
+    {
+        if (_textBox == null)
+            return;
+
+        _textBox.SelectionStart = 0;
+        _textBox.SelectionEnd = 0;
+        _textBox.CaretIndex = 0;
     }
 }
